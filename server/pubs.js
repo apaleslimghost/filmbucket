@@ -1,28 +1,58 @@
 import {Meteor} from 'meteor/meteor';
 import {HTTP} from 'meteor/http';
-import {UserMovies} from '../shared/collections';
+import {UserMovies, Movies} from '../shared/collections';
+import url from 'url';
 
-const omdb = query => HTTP.get('https://www.omdbapi.com', {query}).data;
+const omdbUrl = query => url.format({
+	protocol: 'https',
+	hostname: 'www.omdbapi.com',
+	query,
+});
+
+const omdb = query => {
+	const result = HTTP.get(omdbUrl(query));
+	if (!result.data) {
+		throw new Error(`No JSON returned for query ${JSON.stringify(query)}`);
+	}
+	if (result.data.Response === 'False') {
+		throw new Error(`OMDB Error for query ${JSON.stringify(query)}: ${result.data.Error}`);
+	}
+	return result.data;
+};
 
 const getMovie = i => omdb({i});
 const search = s => omdb({s});
 
-Meteor.publish('movie', id => {
+function moviePublish(id) {
 	this.added('movies', id, getMovie(id));
 	this.ready();
-});
+}
 
-Meteor.publish('searchmovie', q => {
-	const {Search: results} = search(q);
+Meteor.publish('movie', moviePublish);
+
+Meteor.publish('searchmovie', function searchmoviePublish(q) {
+	if (!q) {
+		return this.ready();
+	}
+
+	const results = search(q).Search;
 
 	results.filter(({Type}) => Type === 'movie')
 	.forEach(movie => {
-		this.added('searchmovies', movie.imdbID, Object.assign(movie, getMovie(movie.imdbID)));
+		this.added('searchmovies', movie.imdbID, movie);
 	});
 
 	this.ready();
 });
 
-Meteor.publish('usermovies', function usermoviesPublish() {
-	return UserMovies.find({owner: this.userId});
+Meteor.publishComposite('usermovies', {
+	find() {
+		return UserMovies.find({owner: this.userId});
+	},
+
+	children: [{
+		find(userMovie) {
+			moviePublish.call(this, userMovie.movie);
+		},
+	}],
 });
