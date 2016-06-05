@@ -21,3 +21,5 @@ accounts-ui
 gadicc:blaze-react-component
 accounts-facebook
 react-meteor-data
+http
+reywood:publish-composite

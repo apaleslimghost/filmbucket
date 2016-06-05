@@ -3,6 +3,9 @@
   "rules": {
     "object-curly-spacing": ["error", "never"],
     "import/no-unresolved": ["error", {"ignore": ["^meteor(/|$)"]}],
-    "react/prop-types": ["warn"]
+    "react/prop-types": ["warn"],
+    "indent": ["error", "tab"],
+    "react/jsx-indent": ["error", "tab"],
+    "no-underscore-dangle": ["error", { "allow": ["_id"] }]
   }
 }
