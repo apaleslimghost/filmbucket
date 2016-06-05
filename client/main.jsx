@@ -1,5 +1,5 @@
 import {Meteor} from 'meteor/meteor';
-import React from 'react';
+import React, {PropTypes} from 'react';
 import {render} from 'react-dom';
 import Blaze from 'meteor/gadicc:blaze-react-component';
 import {createContainer} from 'meteor/react-meteor-data';
@@ -15,9 +15,12 @@ const IntroPage = () => <div>
 </div>;
 
 const App = ({loggedIn}) => (loggedIn ? <Account /> : <IntroPage />);
+App.propTypes = {
+  loggedIn: PropTypes.bool,
+};
 
 const AppContainer = createContainer(() => ({
-  loggedIn: Meteor.user(),
+  loggedIn: !!Meteor.user(),
 }), App);
 
 Meteor.startup(() => {
