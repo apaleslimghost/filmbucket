@@ -49,7 +49,7 @@ const ListContainer = createContainer(() => {
 
 const MovieSearch = ({query, movies, search, selectMovie, loading}) => <div>
 	<Input className="icon">
-		<DebounceInput value={query} onChange={ev => search(ev.target.value)} type="search" />
+		<DebounceInput onChange={ev => search(ev.target.value)} type="search" />
 		<Icon className="search" />
 	</Input>
 	{loading && 'loading'}
