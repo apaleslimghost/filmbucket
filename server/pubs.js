@@ -15,7 +15,9 @@ const omdb = query => {
 		throw new Error(`No JSON returned for query ${JSON.stringify(query)}`);
 	}
 	if (result.data.Response === 'False') {
-		throw new Error(`OMDB Error for query ${JSON.stringify(query)}: ${result.data.Error}`);
+		const err = new Error(`OMDB Error for query ${JSON.stringify(query)}: ${result.data.Error}`);
+		err.result = result;
+		throw err;
 	}
 	return result.data;
 };
@@ -31,11 +33,23 @@ function moviePublish(id) {
 Meteor.publish('movie', moviePublish);
 
 Meteor.publish('searchmovie', function searchmoviePublish(q) {
-	if (!q) {
+	const query = q.trim();
+
+	if (!query || query.length <= 2) {
 		return this.ready();
 	}
 
-	const results = search(q).Search;
+	let results;
+
+	try {
+		results = search(query).Search;
+	} catch (e) {
+		if (e.result && e.result.data && e.result.data.Error === 'Movie not found!') {
+			results = [];
+		} else {
+			throw e;
+		}
+	}
 
 	results.filter(({Type}) => Type === 'movie')
 	.forEach(movie => {

@@ -4,8 +4,19 @@ import React, {PropTypes} from 'react';
 import {render} from 'react-dom';
 import Blaze from 'meteor/gadicc:blaze-react-component';
 import {createContainer} from 'meteor/react-meteor-data';
-import DebounceInput from 'react-debounce-input';
-import {Grid, Column, Search, Input, Icon} from 'react-semantify';
+import {debounce} from 'lodash';
+import {Grid,
+	Column,
+	Loader,
+	Input,
+	Icon,
+	List,
+	Item,
+	Content,
+	Header,
+	Image,
+	Label,
+} from 'react-semantify';
 
 import {Movies, UserMovies, SearchMovies} from '../shared/collections';
 
@@ -21,17 +32,28 @@ const IntroPage = () => <Grid className="middle aligned center aligned fullheigh
 	</Column>
 </Grid>;
 
-const Movie = ({Title}) => <h1>{Title}</h1>;
+const Movie = (movie) => {
+	const {Title, Poster, Year, _id, selectMovie} = movie;
+	return (<Item>
+		<Image src={Poster} className="mini" />
+		<Content>
+			{selectMovie
+				? <a href={`#select-${_id}`} className="header" onClick={() => selectMovie(movie)}>{Title}</a>
+				: <Header>{Title}</Header>
+			}
+			<div className="description">
+				<Label>
+					<Icon className="calendar" />
+					{Year}
+				</Label>
+			</div>
+		</Content>
+	</Item>);
+};
 
-const List = ({movies, selectMovie}) => <ul>
-	{movies.map(movie => <li key={movie._id}>
-		{
-			selectMovie
-			? <a href={`#select-${movie._id}`} onClick={() => selectMovie(movie)}><Movie {...movie} /></a>
-			: <Movie {...movie} />
-		}
-	</li>)}
-</ul>;
+const MovieList = ({movies, selectMovie}) => <List>
+	{movies.map(movie => <Movie {...movie} {...{selectMovie}} key={movie._id} />)}
+</List>;
 
 const ListContainer = createContainer(() => {
 	const userMoviesCursor = Meteor.subscribe('usermovies');
@@ -45,28 +67,32 @@ const ListContainer = createContainer(() => {
 		}).fetch(),
 		loading: !userMoviesCursor.ready(),
 	};
-}, List);
+}, MovieList);
 
-const MovieSearch = ({query, movies, search, selectMovie, loading}) => <div>
+const MovieSearch = ({displayQuery, movies, search, selectMovie, loading}) => <div>
 	<Input className="icon">
-		<DebounceInput onChange={ev => search(ev.target.value)} type="search" />
+		<input value={displayQuery} onChange={ev => search(ev.target.value)} type="search" />
 		<Icon className="search" />
 	</Input>
-	{loading && 'loading'}
-	{movies.length > 0 && <List {...{movies, selectMovie}} />}
+	<Loader active={loading} />
+	{movies.length > 0 && <MovieList {...{movies, selectMovie}} />}
 </div>;
 
 Session.setDefault('query', '');
+Session.setDefault('displayQuery', '');
+const updateQuery = debounce(q => Session.set('query', q), 200);
 
 const SearchContainer = createContainer(() => {
 	const query = Session.get('query');
+	const displayQuery = Session.get('displayQuery');
 	const search = Meteor.subscribe('searchmovie', query);
 	return {
-		query,
+		displayQuery,
 		loading: !!query && !search.ready(),
 		movies: SearchMovies.find({}).fetch(),
-		search(q) {
-			Session.set('query', q);
+		search: (q) => {
+			Session.set('displayQuery', q);
+			updateQuery(q);
 		},
 		selectMovie(movie) {
 			UserMovies.insert({
