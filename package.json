@@ -10,7 +10,8 @@
     "react": "^15.1.0",
     "react-addons-pure-render-mixin": "^15.1.0",
     "react-debounce-input": "^2.3.2",
-    "react-dom": "^15.0.2"
+    "react-dom": "^15.0.2",
+    "react-semantify": "^0.5.1"
   },
   "devDependencies": {
     "eslint": "^2.11.1",

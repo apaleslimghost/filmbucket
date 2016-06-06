@@ -5,6 +5,7 @@ import {render} from 'react-dom';
 import Blaze from 'meteor/gadicc:blaze-react-component';
 import {createContainer} from 'meteor/react-meteor-data';
 import DebounceInput from 'react-debounce-input';
+import {Grid, Column, Search, Input, Icon} from 'react-semantify';
 
 import {Movies, UserMovies, SearchMovies} from '../shared/collections';
 
@@ -12,11 +13,13 @@ const Account = (props) => <Blaze template="loginButtons" {...props} />;
 
 const Logo = () => <a href="/" className="logo">muerte.club</a>;
 
-const IntroPage = () => <div>
-	<Logo />
-	<div className="tagline">Movie nights with a random twist</div>
-	<Account />
-</div>;
+const IntroPage = () => <Grid className="middle aligned center aligned fullheight">
+	<Column className="six wide">
+		<Logo />
+		<div className="tagline">Movie nights with a random twist</div>
+		<Account />
+	</Column>
+</Grid>;
 
 const Movie = ({Title}) => <h1>{Title}</h1>;
 
@@ -44,8 +47,11 @@ const ListContainer = createContainer(() => {
 	};
 }, List);
 
-const Search = ({query, movies, search, selectMovie, loading}) => <div>
-	<DebounceInput value={query} onChange={ev => search(ev.target.value)} type="search" />
+const MovieSearch = ({query, movies, search, selectMovie, loading}) => <div>
+	<Input className="icon">
+		<DebounceInput value={query} onChange={ev => search(ev.target.value)} type="search" />
+		<Icon className="search" />
+	</Input>
 	{loading && 'loading'}
 	{movies.length > 0 && <List {...{movies, selectMovie}} />}
 </div>;
@@ -70,9 +76,10 @@ const SearchContainer = createContainer(() => {
 			Session.set('query', '');
 		},
 	};
-}, Search);
+}, MovieSearch);
 
 const MyPage = () => <div>
+	<Account />
 	<h1>your list</h1>
 	<SearchContainer />
 	<ListContainer />
