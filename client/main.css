@@ -1,3 +1,13 @@
 .fullheight {
   height: 100%;
 }
+
+.ui.search > .results {
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+.ui.search > .results .result .image {
+  height: auto;
+  width: 4em;
+}

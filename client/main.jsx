@@ -17,6 +17,7 @@ import {Grid,
 	Image,
 	Label,
 } from 'react-semantify';
+import c from 'classnames';
 
 import {Movies, UserMovies, SearchMovies} from '../shared/collections';
 
@@ -32,29 +33,35 @@ const IntroPage = () => <Grid className="middle aligned center aligned fullheigh
 	</Column>
 </Grid>;
 
-const Movie = (movie) => {
-	const {Title, Poster, Year, _id, selectMovie} = movie;
-	return (<Item>
-		<Image src={Poster} className="mini" />
-		<Content>
-			{selectMovie ? <a
-				href={`#select-${_id}`}
-				className="header"
-				onClick={() => selectMovie(movie)}
-			>{Title}</a> : <Header>{Title}</Header>}
-			<div className="description">
-				<Label>
-					<Icon className="calendar" />
-					{Year}
-				</Label>
-			</div>
-		</Content>
-	</Item>);
-};
+const Result = ({children, onClick}) => <a onClick={onClick} className="result">{children}</a>;
 
-const MovieList = ({movies, selectMovie}) => <List>
-	{movies.map(movie => <Movie {...movie} {...{selectMovie}} key={movie._id} />)}
-</List>;
+const Movie = ({
+	movie: {Title, Poster, Year, _id},
+	selectMovie,
+	wrapper: Wrap = Item,
+}) => <Wrap onClick={selectMovie && (() => selectMovie(_id))}>
+	{Poster !== 'N/A' && <Image src={Poster} className="mini" />}
+	<Content>
+		<Header>{Title}</Header>
+		<div className="description">
+			<Label>
+				<Icon className="calendar" />
+				{Year}
+			</Label>
+		</div>
+	</Content>
+</Wrap>;
+
+const MovieList = ({
+	movies,
+	selectMovie,
+	itemWrapper,
+	wrapper: Wrap = List,
+}) => <Wrap>
+	{movies.map(
+		movie => <Movie movie={movie} selectMovie={selectMovie} key={movie._id} wrapper={itemWrapper} />
+	)}
+</Wrap>;
 
 const ListContainer = createContainer(() => {
 	const userMoviesCursor = Meteor.subscribe('usermovies');
@@ -70,14 +77,30 @@ const ListContainer = createContainer(() => {
 	};
 }, MovieList);
 
-const MovieSearch = ({displayQuery, movies, search, selectMovie, loading}) => <div>
-	<Input className="icon">
-		<input value={displayQuery} onChange={ev => search(ev.target.value)} type="search" />
-		<Icon className="search" />
-	</Input>
-	<Loader active={loading} />
-	{movies.length > 0 && <MovieList {...{movies, selectMovie}} />}
-</div>;
+const MovieSearch = ({displayQuery, movies, search, selectMovie, loading, noResults, ready}) =>
+	<div className={c('ui', 'search', {loading})}>
+		<Input className="icon">
+			<input
+				value={displayQuery}
+				onChange={ev => search(ev.target.value)}
+				type="search"
+				className="prompt"
+			/>
+			<Icon className="search" />
+		</Input>
+		<div className={c('results', 'transition', {visible: ready})}>
+			{noResults ?
+				<div className="message empty">
+					<div className="header">No Results</div>
+					<div className="description">Your search returned no results</div>
+				</div>
+			: <MovieList
+				{...{movies, selectMovie}}
+				wrapper="div"
+				itemWrapper={Result}
+			/>}
+		</div>
+	</div>;
 
 Session.setDefault('query', '');
 Session.setDefault('displayQuery', '');
@@ -87,10 +110,15 @@ const SearchContainer = createContainer(() => {
 	const query = Session.get('query');
 	const displayQuery = Session.get('displayQuery');
 	const search = Meteor.subscribe('searchmovie', query);
+	const movies = SearchMovies.find({});
+	const ready = !!query && search.ready();
+	const noResults = ready && !movies.count();
 	return {
 		displayQuery,
+		noResults,
 		loading: !!query && !search.ready(),
-		movies: SearchMovies.find({}).fetch(),
+		ready,
+		movies: movies.fetch(),
 		search: (q) => {
 			Session.set('displayQuery', q);
 			updateQuery(q);
@@ -98,7 +126,7 @@ const SearchContainer = createContainer(() => {
 		selectMovie(movie) {
 			UserMovies.insert({
 				owner: Meteor.userId(),
-				movie: movie._id,
+				movie,
 			});
 			Session.set('query', '');
 		},
