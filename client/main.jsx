@@ -37,10 +37,11 @@ const Movie = (movie) => {
 	return (<Item>
 		<Image src={Poster} className="mini" />
 		<Content>
-			{selectMovie
-				? <a href={`#select-${_id}`} className="header" onClick={() => selectMovie(movie)}>{Title}</a>
-				: <Header>{Title}</Header>
-			}
+			{selectMovie ? <a
+				href={`#select-${_id}`}
+				className="header"
+				onClick={() => selectMovie(movie)}
+			>{Title}</a> : <Header>{Title}</Header>}
 			<div className="description">
 				<Label>
 					<Icon className="calendar" />

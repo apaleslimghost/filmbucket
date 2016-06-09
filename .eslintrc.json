@@ -6,6 +6,7 @@
     "react/prop-types": ["warn"],
     "indent": ["error", "tab"],
     "react/jsx-indent": ["error", "tab"],
+    "react/jsx-indent-props": ["error", "tab"],
     "no-underscore-dangle": ["error", { "allow": ["_id"] }]
   }
 }

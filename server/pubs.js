@@ -25,8 +25,16 @@ const omdb = query => {
 const getMovie = i => omdb({i});
 const search = s => omdb({s});
 
-function moviePublish(id) {
-	this.added('movies', id, getMovie(id));
+function moviePublish(_id) {
+	const cached = Movies.find({_id});
+	if (cached.count()) {
+		return cached;
+	}
+
+	const movie = getMovie(_id);
+	movie._id = _id;
+	this.added('movies', _id, movie);
+	Movies.insert(movie);
 	this.ready();
 }
 
@@ -66,7 +74,7 @@ Meteor.publishComposite('usermovies', {
 
 	children: [{
 		find(userMovie) {
-			moviePublish.call(this, userMovie.movie);
+			return moviePublish.call(this, userMovie.movie);
 		},
 	}],
 });
