@@ -9,7 +9,7 @@ const Movie = ({
 }) => <Wrap onClick={selectMovie && (() => selectMovie(_id))}>
 	{Poster !== 'N/A' && <Image src={Poster} className="mini" />}
 	<Content>
-		<Header>{Title}</Header>
+		<Header className="small">{Title}</Header>
 		<div className="description">
 			<Label>
 				<Icon className="calendar" />
