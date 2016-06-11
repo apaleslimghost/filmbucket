@@ -11,7 +11,8 @@ export const MovieList = ({
 	selectMovie,
 	itemWrapper,
 	wrapper: Wrap = List,
-}) => <Wrap>
+	className,
+}) => <Wrap {...{className}}>
 	{movies.map(
 		movie => <Movie movie={movie} selectMovie={selectMovie} key={movie._id} wrapper={itemWrapper} />
 	)}
@@ -24,7 +25,7 @@ MovieList.propTypes = {
 	wrapper: component,
 };
 
-const ListContainer = createContainer(() => {
+const ListContainer = createContainer(({className}) => {
 	const userMoviesCursor = Meteor.subscribe('usermovies');
 	const userMovieIds = UserMovies.find({
 		owner: Meteor.userId(),
@@ -35,6 +36,7 @@ const ListContainer = createContainer(() => {
 			_id: {$in: userMovieIds},
 		}).fetch(),
 		loading: !userMoviesCursor.ready(),
+		className,
 	};
 }, MovieList);
 
