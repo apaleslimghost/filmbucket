@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import {Content, Header, Icon, Image, Item, Label} from 'react-semantify';
-import component from './component';
+import component from '../component';
 
 const Movie = ({
 	movie: {Title, Poster, Year, _id},

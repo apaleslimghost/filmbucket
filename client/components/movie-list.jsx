@@ -3,8 +3,8 @@ import {List} from 'react-semantify';
 import {Meteor} from 'meteor/meteor';
 import {createContainer} from 'meteor/react-meteor-data';
 import Movie from './movie';
-import {Movies, UserMovies} from '../shared/collections';
-import component from './component';
+import {Movies, UserMovies} from '../../shared/collections';
+import component from '../component';
 
 export const MovieList = ({
 	movies,
@@ -23,6 +23,7 @@ MovieList.propTypes = {
 	selectMovie: PropTypes.func,
 	itemWrapper: component,
 	wrapper: component,
+	className: PropTypes.string,
 };
 
 const ListContainer = createContainer(({className}) => {

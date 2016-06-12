@@ -8,7 +8,7 @@ import {debounce} from 'lodash';
 
 import Result from './result';
 import {MovieList} from './movie-list';
-import {SearchMovies, UserMovies} from '../shared/collections';
+import {SearchMovies, UserMovies} from '../../shared/collections';
 
 export const MovieSearch = ({
 	displayQuery, movies, search, selectMovie, loading, noResults, ready,

@@ -1,7 +1,7 @@
 import {Meteor} from 'meteor/meteor';
-import React, {PropTypes} from 'react';
+import React from 'react';
 import {render} from 'react-dom';
-import App from './app';
+import App from './components/app';
 
 Meteor.startup(() => {
 	render(<App />, document.querySelector('main'));
