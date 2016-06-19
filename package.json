@@ -1,5 +1,5 @@
 {
-  "name": "Muerte",
+  "name": "filmbucket",
   "private": true,
   "scripts": {
     "start": "meteor run"
