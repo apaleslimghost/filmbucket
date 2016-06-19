@@ -33,7 +33,12 @@ Meteor.publishComposite('usermovies', {
 
 Meteor.publishComposite('group', {
 	find() {
-		return Groups.find({members: this.userId});
+		const cursor = Groups.find({members: this.userId});
+		if (!cursor.count()) {
+			Groups.insert({members: [this.userId]});
+		}
+
+		return cursor;
 	},
 
 	children: [{
