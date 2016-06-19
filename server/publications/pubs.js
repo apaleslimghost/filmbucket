@@ -1,5 +1,5 @@
 import {Meteor} from 'meteor/meteor';
-import {UserMovies, Movies} from '../../shared/collections';
+import {UserMovies, Movies, Groups} from '../../shared/collections';
 import omdb from '../omdb';
 
 const getMovie = i => omdb({i});
@@ -27,6 +27,18 @@ Meteor.publishComposite('usermovies', {
 	children: [{
 		find(userMovie) {
 			return moviePublish.call(this, userMovie.movie);
+		},
+	}],
+});
+
+Meteor.publishComposite('group', {
+	find() {
+		return Groups.find({members: this.userId});
+	},
+
+	children: [{
+		find(group) {
+			return Meteor.users.find({_id: {$in: group.members}});
 		},
 	}],
 });

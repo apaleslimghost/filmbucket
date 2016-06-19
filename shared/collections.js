@@ -13,6 +13,13 @@ UserMovies.allow({
 	fetch: ['owner'],
 });
 
+Groups.allow({
+	insert: (userId, doc) => doc.members.indexOf(userId) !== -1,
+	remove: (userId, doc) => doc.members.indexOf(userId) !== -1,
+	update: (userId, doc) => doc.members.indexOf(userId) !== -1,
+	fetch: ['members'],
+});
+
 function debugCollection(name, collection) {
 	/* eslint no-console: "off" */
 	console.log(name);

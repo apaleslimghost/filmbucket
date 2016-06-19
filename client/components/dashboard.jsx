@@ -1,6 +1,7 @@
 import React from 'react';
 import SearchContainer from './search';
 import ListContainer from './movie-list';
+import GroupContainer from './group';
 import {Container, Grid, Column, Menu, Item, Header} from 'react-semantify';
 
 const Dashboard = () => <Container>
@@ -16,6 +17,7 @@ const Dashboard = () => <Container>
 			<Menu className="secondary">
 				<Item className="fitted"><Header>Your group</Header></Item>
 			</Menu>
+			<GroupContainer />
 		</Column>
 	</Grid>
 </Container>;

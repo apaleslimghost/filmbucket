@@ -6,7 +6,7 @@ import Account from './account';
 const IntroPage = () => <Grid className="middle aligned center aligned fullheight">
 	<Column className="six wide">
 		<Logo />
-		<div className="tagline">Movie nights with a random twist</div>
+		<div className="tagline"></div>
 		<Account />
 	</Column>
 </Grid>;
