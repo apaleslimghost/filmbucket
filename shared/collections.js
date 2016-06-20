@@ -34,4 +34,6 @@ if (Meteor.isClient) {
 			}
 		});
 	};
+
+	window.getCollection = id => exports[id];
 }

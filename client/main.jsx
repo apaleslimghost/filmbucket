@@ -1,5 +1,5 @@
 import {Meteor} from 'meteor/meteor';
-import {Accounts} from 'meteor/account-base';
+import {Accounts} from 'meteor/accounts-base';
 import React from 'react';
 import {render} from 'react-dom';
 import App from './components/app';

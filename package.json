@@ -7,6 +7,8 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "lodash": "^4.13.1",
+    "lodash.groupby": "^4.4.0",
+    "lodash.mapvalues": "^4.4.0",
     "meteor-node-stubs": "^0.2.3",
     "react": "^15.1.0",
     "react-addons-pure-render-mixin": "^15.1.0",
