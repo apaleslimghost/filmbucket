@@ -4,11 +4,12 @@ import component from '../component';
 
 const Movie = ({
 	movie: {Title, Poster, Year, _id},
-	selectMovie,
+	selectMovie = () => {},
+	showContent = true,
 	wrapper: Wrap = Item,
-}) => <Wrap onClick={selectMovie && (() => selectMovie(_id))}>
+}) => <Wrap onClick={() => selectMovie(_id)}>
 	{Poster !== 'N/A' && <Image src={Poster} className="mini" />}
-	<Content>
+	{showContent && <Content>
 		<Header className="small">{Title}</Header>
 		<div className="description">
 			<Label>
@@ -16,12 +17,13 @@ const Movie = ({
 				{Year}
 			</Label>
 		</div>
-	</Content>
+	</Content>}
 </Wrap>;
 
 Movie.propTypes = {
 	movie: PropTypes.object.isRequired,
 	selectMovie: PropTypes.func,
+	showContent: PropTypes.bool,
 	wrapper: component,
 };
 

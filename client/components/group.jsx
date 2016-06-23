@@ -5,19 +5,20 @@ import {Groups, UserMovies, Movies} from '../../shared/collections';
 import {List, Item, Header, Content} from 'react-semantify';
 import groupBy from 'lodash.groupby';
 import mapValues from 'lodash.mapvalues';
+import Movie from './movie';
 
 const Member = ({user, movies}) => <Item>
 	<Header>{user.profile.name}</Header>
 	{
 		movies.length ?
-		<List className="horizontal">
-			{movies.map(movie => <Item key={movie._id}>{movie.Title}</Item>)}
-		</List> :
-		<Content>
-			No movies yet! {
-				user._id === Meteor.userId() && 'Add some on the left.'
-			}
-		</Content>
+			<List className="horizontal">
+				{movies.map(movie => <Movie key={movie._id} movie={movie} showContent={false} />)}
+			</List> :
+			<Content>
+				No movies yet! {
+					user._id === Meteor.userId() && 'Add some on the left.'
+				}
+			</Content>
 	}
 </Item>;
 
