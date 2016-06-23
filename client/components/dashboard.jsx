@@ -2,6 +2,7 @@ import React from 'react';
 import SearchContainer from './search';
 import ListContainer from './movie-list';
 import GroupContainer from './group';
+import Invite from './invite';
 import {Container, Grid, Column, Menu, Item, Header} from 'react-semantify';
 
 const Dashboard = () => <Container>
@@ -16,6 +17,9 @@ const Dashboard = () => <Container>
 		<Column>
 			<Menu className="secondary">
 				<Item className="fitted"><Header>Your group</Header></Item>
+				<Item className="right fitted">
+					<Invite groupId={'lololol'} />
+				</Item>
 			</Menu>
 			<GroupContainer />
 		</Column>
