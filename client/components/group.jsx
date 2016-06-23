@@ -34,7 +34,6 @@ const GroupContainer = createContainer(() => {
 		},
 	}).fetch();
 	const userMoviesByOwner = groupBy(userMovies, userMovie => userMovie.owner);
-	console.log(userMovies);
 	const moviesByOwner = mapValues(
 		userMoviesByOwner,
 		movies => movies.map(

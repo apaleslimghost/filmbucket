@@ -13,7 +13,7 @@ function moviePublish(_id) {
 	const movie = getMovie(_id);
 	movie._id = _id;
 	this.added('movies', _id, movie);
-	Movies.insert(movie);
+	Movies.upsert(movie);
 	this.ready();
 }
 
