@@ -20,8 +20,8 @@ function moviePublish(_id) {
 Meteor.publish('movie', moviePublish);
 
 const userMoviePublish = getUserIds => ({
-	find() {
-		return UserMovies.find({owner: {$in: [].concat(getUserIds.call(this))}});
+	find(group) {
+		return UserMovies.find({owner: {$in: [].concat(getUserIds.call(this, group))}});
 	},
 
 	children: [{
@@ -31,7 +31,7 @@ const userMoviePublish = getUserIds => ({
 	}],
 });
 
-Meteor.publishComposite('usermovies', userMoviePublish(function () {
+Meteor.publishComposite('usermovies', userMoviePublish(function getUserIds() {
 	return this.userId;
 }));
 
