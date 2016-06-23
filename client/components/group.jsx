@@ -14,7 +14,7 @@ const Member = ({user, movies}) => <Item>
 </Item>;
 
 export const Group = ({users, movies}) => <List>
-{users.map(user => <Member key={user._id} user={user} movies={movies[user._id]} />)}
+{users.map(user => <Member key={user._id} user={user} movies={movies[user._id] || []} />)}
 </List>;
 
 const GroupContainer = createContainer(() => {
@@ -26,6 +26,7 @@ const GroupContainer = createContainer(() => {
 		},
 	}).fetch();
 	const userMoviesByOwner = groupBy(userMovies, userMovie => userMovie.owner);
+	console.log(userMovies);
 	const moviesByOwner = mapValues(
 		userMoviesByOwner,
 		movies => movies.map(
