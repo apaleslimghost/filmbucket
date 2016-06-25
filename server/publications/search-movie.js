@@ -13,16 +13,19 @@ Meteor.publish('searchmovie', function searchmoviePublish(q) {
 	try {
 		results = search(query);
 	} catch (e) {
-		if (e.result && e.result.data && e.result.data.error === 'Movie not found!') {
-			results = [];
+		if (e.response && e.response.data && e.response.data.errors) {
+			if (e.response.data.errors.indexOf('query must be provided') >= 0) {
+				results = [];
+			} else {
+				this.error(e.response.data.errors.join(', '));
+			}
 		} else {
-			throw e;
+			this.error(e);
 		}
 	}
 
-	results.filter(({type}) => type === 'movie')
-	.forEach(movie => {
-		this.added('searchmovies', movie.imdbId, movie);
+	results.forEach(movie => {
+		this.added('searchmovies', movie.id, movie);
 	});
 
 	this.ready();

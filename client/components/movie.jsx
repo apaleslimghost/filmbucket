@@ -1,20 +1,21 @@
 import React, {PropTypes} from 'react';
 import {Content, Header, Icon, Image, Item, Label} from 'react-semantify';
 import component from '../component';
+import imageUrl from '../../shared/image-url';
 
 const Movie = ({
-	movie: {title, poster, year, _id},
+	movie: {title, posterPath, releaseDate, _id},
 	selectMovie = () => {},
 	showContent = true,
 	wrapper: Wrap = Item,
 }) => <Wrap onClick={() => selectMovie(_id)}>
-	{poster !== 'N/A' && <Image src={poster} className="mini" />}
+	{posterPath && <Image src={imageUrl(posterPath)} className="mini" />}
 	{showContent && <Content>
 		<Header className="small">{title}</Header>
 		<div className="description">
 			<Label>
 				<Icon className="calendar" />
-				{year}
+				{new Date(releaseDate).getFullYear()}
 			</Label>
 		</div>
 	</Content>}

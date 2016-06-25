@@ -1,26 +1,25 @@
 import {HTTP} from 'meteor/http';
 import url from 'url';
+import path from 'path';
 import mapKeys from 'deep-map-keys';
 import camelCase from 'camel-case';
 
-const formatUrl = query => url.format({
+const formatUrl = (pathname, query) => url.format({
 	protocol: 'https',
-	hostname: 'www.omdbapi.com',
-	query,
+	hostname: 'api.themoviedb.org',
+	query: Object.assign({
+		api_key: process.env.TMDB_API_KEY,
+	}, query),
+	pathname: path.join('/3', pathname),
 });
 
-export const call = query => {
-	const result = HTTP.get(formatUrl(query));
+export const call = (pathname, query) => {
+	const result = HTTP.get(formatUrl(pathname, query));
 	if (!result.data) {
-		throw new Error(`No JSON returned for query ${JSON.stringify(query)}`);
-	}
-	if (result.data.Response === 'False') {
-		const err = new Error(`OMDB Error for query ${JSON.stringify(query)}: ${result.data.Error}`);
-		err.result = result;
-		throw err;
+		throw new Error(`No JSON returned for ${pathname} ${JSON.stringify(query)}`);
 	}
 	return mapKeys(result.data, camelCase);
 };
 
-export const getById = i => call({i});
-export const search = s => call({s}).search;
+export const getById = id => call(`movie/${id}`);
+export const search = query => call('search/movie', {query}).results;
