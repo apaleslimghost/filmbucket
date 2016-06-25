@@ -3,18 +3,18 @@ import {Content, Header, Icon, Image, Item, Label} from 'react-semantify';
 import component from '../component';
 
 const Movie = ({
-	movie: {Title, Poster, Year, _id},
+	movie: {title, poster, year, _id},
 	selectMovie = () => {},
 	showContent = true,
 	wrapper: Wrap = Item,
 }) => <Wrap onClick={() => selectMovie(_id)}>
-	{Poster !== 'N/A' && <Image src={Poster} className="mini" />}
+	{poster !== 'N/A' && <Image src={poster} className="mini" />}
 	{showContent && <Content>
-		<Header className="small">{Title}</Header>
+		<Header className="small">{title}</Header>
 		<div className="description">
 			<Label>
 				<Icon className="calendar" />
-				{Year}
+				{year}
 			</Label>
 		</div>
 	</Content>}

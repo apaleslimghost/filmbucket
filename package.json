@@ -5,8 +5,10 @@
     "start": "meteor run"
   },
   "dependencies": {
+    "camel-case": "^1.2.2",
     "classnames": "^2.2.5",
     "copy-to-clipboard": "^3.0.2",
+    "deep-map-keys": "^1.2.0",
     "lodash": "^4.13.1",
     "lodash.groupby": "^4.4.0",
     "lodash.mapvalues": "^4.4.0",

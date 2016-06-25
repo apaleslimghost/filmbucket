@@ -1,5 +1,7 @@
 import {HTTP} from 'meteor/http';
 import url from 'url';
+import mapKeys from 'deep-map-keys';
+import camelCase from 'camel-case';
 
 const formatUrl = query => url.format({
 	protocol: 'https',
@@ -17,8 +19,8 @@ export const call = query => {
 		err.result = result;
 		throw err;
 	}
-	return result.data;
+	return mapKeys(result.data, camelCase);
 };
 
 export const getById = i => call({i});
-export const search = s => call({s});
+export const search = s => call({s}).search;

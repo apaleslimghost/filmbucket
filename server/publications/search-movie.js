@@ -11,18 +11,18 @@ Meteor.publish('searchmovie', function searchmoviePublish(q) {
 	let results;
 
 	try {
-		results = search(query).Search;
+		results = search(query);
 	} catch (e) {
-		if (e.result && e.result.data && e.result.data.Error === 'Movie not found!') {
+		if (e.result && e.result.data && e.result.data.error === 'Movie not found!') {
 			results = [];
 		} else {
 			throw e;
 		}
 	}
 
-	results.filter(({Type}) => Type === 'movie')
+	results.filter(({type}) => type === 'movie')
 	.forEach(movie => {
-		this.added('searchmovies', movie.imdbID, movie);
+		this.added('searchmovies', movie.imdbId, movie);
 	});
 
 	this.ready();
