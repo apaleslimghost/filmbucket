@@ -9,7 +9,7 @@ const Movie = ({
 	showContent = true,
 	wrapper: Wrap = Item,
 }) => <Wrap onClick={() => selectMovie(_id)}>
-	{posterPath && <Image src={imageUrl(posterPath)} className="mini" />}
+	{posterPath && <Image src={imageUrl(posterPath, {size: 'w92'})} className="mini" />}
 	{showContent && <Content>
 		<Header className="small">{title}</Header>
 		<div className="description">
