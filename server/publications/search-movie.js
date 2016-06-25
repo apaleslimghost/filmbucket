@@ -1,7 +1,5 @@
 import {Meteor} from 'meteor/meteor';
-import omdb from '../omdb';
-
-const search = s => omdb({s});
+import {search} from '../movie-api';
 
 Meteor.publish('searchmovie', function searchmoviePublish(q) {
 	const query = q.trim();

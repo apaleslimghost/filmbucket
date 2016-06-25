@@ -1,14 +1,14 @@
 import {HTTP} from 'meteor/http';
 import url from 'url';
 
-const omdbUrl = query => url.format({
+const formatUrl = query => url.format({
 	protocol: 'https',
 	hostname: 'www.omdbapi.com',
 	query,
 });
 
-const omdb = query => {
-	const result = HTTP.get(omdbUrl(query));
+export const call = query => {
+	const result = HTTP.get(formatUrl(query));
 	if (!result.data) {
 		throw new Error(`No JSON returned for query ${JSON.stringify(query)}`);
 	}
@@ -20,4 +20,5 @@ const omdb = query => {
 	return result.data;
 };
 
-export default omdb;
+export const getById = i => call({i});
+export const search = s => call({s});

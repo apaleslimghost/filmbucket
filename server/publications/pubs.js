@@ -1,8 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import {UserMovies, Movies, Groups} from '../../shared/collections';
-import omdb from '../omdb';
-
-const getMovie = i => omdb({i});
+import {getById} from '../movie-api';
 
 function moviePublish(_id) {
 	const cached = Movies.find({_id});
@@ -10,7 +8,7 @@ function moviePublish(_id) {
 		return cached;
 	}
 
-	const movie = getMovie(_id);
+	const movie = getById(_id);
 	movie._id = _id;
 	this.added('movies', _id, movie);
 	Movies.upsert({_id}, movie);
@@ -44,5 +42,5 @@ Meteor.publishComposite('group', {
 		find(group) {
 			return Meteor.users.find({_id: {$in: group ? group.members : []}});
 		},
-	}, userMoviePublish(group => group ? group.members : [])],
+	}, userMoviePublish(group => (group ? group.members : []))],
 });
