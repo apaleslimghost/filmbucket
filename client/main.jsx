@@ -1,4 +1,5 @@
 import {Meteor} from 'meteor/meteor';
+import {Template} from 'meteor/templating';
 import {Accounts} from 'meteor/accounts-base';
 import React from 'react';
 import {render} from 'react-dom';
@@ -13,3 +14,5 @@ Accounts.onLogin(() => {
 	const {group} = qs.parse(location.search.slice(1));
 	Meteor.call('ensureGroup', group);
 });
+
+Template.loginReplacement.replaces('_loginButtonsLoggedInSingleLogoutButton');
