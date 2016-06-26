@@ -11,6 +11,7 @@
     "deep-map-keys": "^1.2.0",
     "lodash": "^4.13.1",
     "lodash.groupby": "^4.4.0",
+    "lodash.keyby": "^4.4.0",
     "lodash.mapvalues": "^4.4.0",
     "meteor-node-stubs": "^0.2.3",
     "react": "^15.1.0",

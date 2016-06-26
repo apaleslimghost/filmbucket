@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react';
-import {Content, Header, Icon, Image, Item, Label} from 'react-semantify';
+import {Content, Header, Icon, Image, Item, Label, Button} from 'react-semantify';
 import component from '../component';
 import imageUrl from '../../shared/image-url';
 
@@ -8,6 +8,8 @@ const Movie = ({
 	selectMovie = () => {},
 	showContent = true,
 	wrapper: Wrap = Item,
+	removeMovie,
+	showRemove,
 }) => <Wrap onClick={() => selectMovie(movie._id)} movie={movie}>
 	{movie.posterPath &&
 		<Image src={imageUrl(movie.posterPath, {size: 'w92'})} className="mini rounded" />
@@ -15,14 +17,20 @@ const Movie = ({
 	{showContent && <Content>
 		<Header className="small">{movie.title}</Header>
 		<div className="description">
-			{movie.releaseDate && <Label>
+			{movie.releaseDate && <Label className="small">
 				<Icon className="calendar" />
 				{new Date(movie.releaseDate).getFullYear()}
 			</Label>}
-			{!!movie.voteCount && <Label>
+			{!!movie.voteCount && <Label className="small">
 				<Icon className="star" />
 				{movie.voteAverage}
 			</Label>}
+			{showRemove &&
+				<Button onClick={() => removeMovie(movie)} className="small negative right">
+					<Icon className="remove" />
+					Remove from list
+				</Button>
+			}
 		</div>
 	</Content>}
 </Wrap>;
@@ -32,6 +40,8 @@ Movie.propTypes = {
 	selectMovie: PropTypes.func,
 	showContent: PropTypes.bool,
 	wrapper: component,
+	showRemove: PropTypes.bool,
+	removeMovie: PropTypes.func,
 };
 
 export default Movie;

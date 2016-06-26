@@ -12,7 +12,7 @@ const Dashboard = () => <Container>
 				<Item className="fitted"><Header>Your list</Header></Item>
 				<Item className="right fitted"><SearchContainer /></Item>
 			</Menu>
-			<ListContainer className="divided relaxed" />
+			<ListContainer className="divided relaxed" showRemove />
 		</Column>
 		<Column>
 			<Menu className="secondary">

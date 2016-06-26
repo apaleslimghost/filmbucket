@@ -15,7 +15,7 @@ const Result = ({children, onClick, dim, loading}) => <div className="result dim
 			</div>
 		</Content>}
 	</Dimmer>
-	<a onClick={onClick} className="mmable">
+	<a onClick={onClick}>
 		{children}
 	</a>
 </div>;
