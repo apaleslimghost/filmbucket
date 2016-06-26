@@ -12,7 +12,7 @@ import {SearchMovies, UserMovies} from '../../shared/collections';
 
 export const MovieSearch = ({
 	displayQuery, movies, search, selectMovie, loading, noResults, ready, clearSearch,
-}) => <div className={c('ui', 'search', {loading})}>
+}) => <div className={c('ui', 'search', 'right', 'aligned', {loading})}>
 	<Input className="icon">
 		<input
 			value={displayQuery}
