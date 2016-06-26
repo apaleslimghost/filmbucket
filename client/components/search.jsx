@@ -64,16 +64,19 @@ const SearchContainer = createContainer(() => {
 		loading: !!query && !search.ready(),
 		ready,
 		movies: movies.fetch(),
+
 		search: (q) => {
 			Session.set('displayQuery', q);
 			updateQuery(q);
 		},
+
 		selectMovie(movie) {
 			UserMovies.insert({
 				owner: Meteor.userId(),
 				movie,
 			});
 			Session.set('query', '');
+			Session.set('displayQuery', '');
 		},
 	};
 }, MovieSearch);
