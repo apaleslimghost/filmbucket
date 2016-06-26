@@ -11,7 +11,7 @@ import {MovieList} from './movie-list';
 import {SearchMovies, UserMovies} from '../../shared/collections';
 
 export const MovieSearch = ({
-	displayQuery, movies, search, selectMovie, loading, noResults, ready,
+	displayQuery, movies, search, selectMovie, loading, noResults, ready, clearSearch,
 }) => <div className={c('ui', 'search', {loading})}>
 	<Input className="icon">
 		<input
@@ -21,7 +21,7 @@ export const MovieSearch = ({
 			className="prompt"
 			placeholder="Add a movie&hellip;"
 		/>
-		<Icon className="search" />
+		<Icon className={ready ? 'circular remove link' : 'search'} onClick={clearSearch} />
 	</Input>
 	<div className={c('results', 'transition', {visible: ready})}>
 		{noResults ?
@@ -45,11 +45,17 @@ MovieSearch.propTypes = {
 	loading: PropTypes.bool,
 	noResults: PropTypes.bool,
 	ready: PropTypes.bool,
+	clearSearch: PropTypes.func,
 };
 
 Session.setDefault('query', '');
 Session.setDefault('displayQuery', '');
 const updateQuery = debounce(q => Session.set('query', q), 200);
+
+const clearSearch = () => {
+	Session.set('query', '');
+	Session.set('displayQuery', '');
+};
 
 const SearchContainer = createContainer(() => {
 	const query = Session.get('query');
@@ -58,6 +64,7 @@ const SearchContainer = createContainer(() => {
 	const movies = SearchMovies.find({});
 	const ready = !!query && search.ready();
 	const noResults = ready && !movies.count();
+
 	return {
 		displayQuery,
 		noResults,
@@ -75,9 +82,10 @@ const SearchContainer = createContainer(() => {
 				owner: Meteor.userId(),
 				movie,
 			});
-			Session.set('query', '');
-			Session.set('displayQuery', '');
+			clearSearch();
 		},
+
+		clearSearch,
 	};
 }, MovieSearch);
 
