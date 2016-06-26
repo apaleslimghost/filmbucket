@@ -4,19 +4,25 @@ import component from '../component';
 import imageUrl from '../../shared/image-url';
 
 const Movie = ({
-	movie: {title, posterPath, releaseDate, _id},
+	movie,
 	selectMovie = () => {},
 	showContent = true,
 	wrapper: Wrap = Item,
-}) => <Wrap onClick={() => selectMovie(_id)}>
-	{posterPath && <Image src={imageUrl(posterPath, {size: 'w92'})} className="mini" />}
+}) => <Wrap onClick={() => selectMovie(movie._id)} movie={movie}>
+	{movie.posterPath &&
+		<Image src={imageUrl(movie.posterPath, {size: 'w92'})} className="mini rounded" />
+	}
 	{showContent && <Content>
-		<Header className="small">{title}</Header>
+		<Header className="small">{movie.title}</Header>
 		<div className="description">
-			<Label>
+			{movie.releaseDate && <Label>
 				<Icon className="calendar" />
-				{new Date(releaseDate).getFullYear()}
-			</Label>
+				{new Date(movie.releaseDate).getFullYear()}
+			</Label>}
+			{!!movie.voteCount && <Label>
+				<Icon className="star" />
+				{movie.voteAverage}
+			</Label>}
 		</div>
 	</Content>}
 </Wrap>;

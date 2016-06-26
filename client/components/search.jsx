@@ -68,7 +68,7 @@ const SearchContainer = createContainer(() => {
 	return {
 		displayQuery,
 		noResults,
-		loading: !!query && !search.ready(),
+		loading: !!query && !(search.ready()),
 		ready,
 		movies: movies.fetch(),
 
