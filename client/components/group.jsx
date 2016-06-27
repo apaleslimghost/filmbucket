@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import {createContainer} from 'meteor/react-meteor-data';
 import {Meteor} from 'meteor/meteor';
 import {Groups, UserMovies, Movies} from '../../shared/collections';
@@ -22,9 +22,19 @@ const Member = ({user, movies}) => <Item>
 	}
 </Item>;
 
-export const Group = ({users, movies}) => <List>
-{users.map(user => <Member key={user._id} user={user} movies={movies[user._id] || []} />)}
+Member.propTypes = {
+	user: PropTypes.object,
+	movies: PropTypes.array,
+};
+
+export const Group = ({users, moviesByOwner}) => <List>
+{users.map(user => <Member key={user._id} user={user} movies={moviesByOwner[user._id] || []} />)}
 </List>;
+
+Group.propTypes = {
+	users: PropTypes.array,
+	moviesByOwner: PropTypes.object,
+};
 
 const GroupContainer = createContainer(() => {
 	const groupCursor = Meteor.subscribe('group');
@@ -45,7 +55,7 @@ const GroupContainer = createContainer(() => {
 	return {
 		loading: !groupCursor.ready(),
 		group,
-		movies: moviesByOwner,
+		moviesByOwner,
 		users: Meteor.users.find({_id: {$in: group ? group.members : []}}).fetch(),
 	};
 }, Group);
