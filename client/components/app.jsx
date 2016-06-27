@@ -1,27 +1,26 @@
 import {Meteor} from 'meteor/meteor';
 import {createContainer} from 'meteor/react-meteor-data';
 import React, {PropTypes} from 'react';
-import Dashboard from './dashboard';
 import IntroPage from './intro-page';
 import Logo from './logo';
 import Account from './account';
 import {Container, Menu, Item, Header} from 'react-semantify';
 
-export const App = ({loggedIn}) => (loggedIn ? <Container>
+export const App = ({children}) => <Container>
 	<Menu className="text">
 		<Item><Header><Logo /></Header></Item>
 		<Item className="right"><Account /></Item>
 	</Menu>
 
-	<Dashboard />
-</Container> : <IntroPage />);
+	{children}
+</Container>;
 
 App.propTypes = {
-	loggedIn: PropTypes.bool,
+	children: PropTypes.node.isRequired,
 };
 
-const AppContainer = createContainer(() => ({
-	loggedIn: !!Meteor.user(),
+const AppContainer = createContainer(({router}) => ({
+	children: Meteor.user() ? router() : <IntroPage />,
 }), App);
 
 export default AppContainer;

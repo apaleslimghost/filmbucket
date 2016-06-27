@@ -5,6 +5,7 @@
     "start": "meteor run"
   },
   "dependencies": {
+    "boulevard": "^2.3.4",
     "camel-case": "^1.2.2",
     "classnames": "^2.2.5",
     "copy-to-clipboard": "^3.0.2",
