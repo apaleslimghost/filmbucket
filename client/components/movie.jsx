@@ -1,9 +1,13 @@
+import {Meteor} from 'meteor/meteor';
+import {createContainer} from 'meteor/react-meteor-data';
 import React, {PropTypes} from 'react';
 import {Content, Header, Icon, Image, Item, Label, Button} from 'react-semantify';
 import component from '../component';
 import imageUrl from '../../shared/image-url';
+import {UserMovies} from '../../shared/collections';
+import keyBy from 'lodash.keyby';
 
-const Movie = ({
+export const Movie = ({
 	movie,
 	selectMovie = () => {},
 	showContent = true,
@@ -44,4 +48,20 @@ Movie.propTypes = {
 	removeMovie: PropTypes.func,
 };
 
-export default Movie;
+const MovieContainer = createContainer(({showRemove}) => {
+	const userMoviesCursor = Meteor.subscribe('usermovies');
+	const userMovies = UserMovies.find({
+		owner: Meteor.userId(),
+	}).fetch();
+	const movieMap = keyBy(userMovies, 'movie');
+
+	return {
+		showRemove: userMoviesCursor.ready() && showRemove,
+		removeMovie({_id}) {
+			const userMovie = movieMap[_id];
+			UserMovies.remove(userMovie._id);
+		},
+	};
+}, Movie);
+
+export default MovieContainer;

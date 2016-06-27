@@ -5,7 +5,6 @@ import {createContainer} from 'meteor/react-meteor-data';
 import Movie from './movie';
 import {Movies, UserMovies} from '../../shared/collections';
 import component from '../component';
-import keyBy from 'lodash.keyby';
 
 export const MovieList = ({
 	movies,
@@ -15,7 +14,6 @@ export const MovieList = ({
 	className,
 	loading = false,
 	showRemove = false,
-	removeMovie,
 }) => <Wrap {...{className}}>
 	{loading ? <ItemWrap><Loader /></ItemWrap> : movies.map(
 		movie => <Movie
@@ -24,7 +22,6 @@ export const MovieList = ({
 			key={movie._id}
 			wrapper={ItemWrap}
 			showRemove={showRemove}
-			removeMovie={removeMovie}
 		/>
 	)}
 </Wrap>;
@@ -37,30 +34,20 @@ MovieList.propTypes = {
 	className: PropTypes.string,
 	loading: PropTypes.bool,
 	showRemove: PropTypes.bool,
-	removeMovie: PropTypes.func,
 };
 
-const ListContainer = createContainer(({className, showRemove}) => {
+const ListContainer = createContainer(() => {
 	const userMoviesCursor = Meteor.subscribe('usermovies');
 	const userMovies = UserMovies.find({
 		owner: Meteor.userId(),
 	}).fetch();
 	const userMovieIds = userMovies.map(({movie}) => movie);
-	const movieMap = keyBy(userMovies, 'movie');
 
 	return {
 		movies: Movies.find({
 			_id: {$in: userMovieIds},
-		}).fetch().map(movie => {
-			movie.userMovieId = movieMap[movie.id]._id;
-			return movie;
-		}),
+		}).fetch(),
 		loading: !userMoviesCursor.ready(),
-		className,
-		removeMovie({userMovieId}) {
-			UserMovies.remove(userMovieId);
-		},
-		showRemove,
 	};
 }, MovieList);
 

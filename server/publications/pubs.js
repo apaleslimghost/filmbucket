@@ -9,7 +9,6 @@ function moviePublish(_id) {
 	}
 
 	const movie = getById(_id);
-	console.log(movie);
 	movie._id = _id;
 	this.added('movies', _id, movie);
 	Movies.upsert({_id}, movie);
