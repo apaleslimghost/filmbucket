@@ -3,7 +3,8 @@ import SearchContainer from './search';
 import ListContainer from './movie-list';
 import GroupContainer from './group';
 import Invite from './invite';
-import {Container, Grid, Column, Menu, Item, Header, Button, Icon} from 'react-semantify';
+import {link} from '../history';
+import {Container, Grid, Column, Menu, Item, Header, Icon} from 'react-semantify';
 
 const Dashboard = () => <Container>
 	<Grid className="two column divided relaxed stackable">
@@ -19,10 +20,10 @@ const Dashboard = () => <Container>
 				<Item className="fitted"><Header>Your group</Header></Item>
 				<div className="right menu">
 					<Item className="fitted">
-						<Button className="primary">
+						<a className="ui button primary" href="/choose" onClick={link}>
 							<Icon className="film" />
 							Choose a movie
-						</Button>
+						</a>
 					</Item>
 					<Item className="fitted">
 						<Invite groupId={'lololol'} />

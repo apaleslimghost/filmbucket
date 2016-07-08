@@ -8,10 +8,11 @@ import route from './router';
 
 import App from './components/app';
 import Dashboard from './components/dashboard';
+import Choose from './components/choose';
 
 const router = route({
 	'/': () => <Dashboard />,
-	'/test': () => <h1>Test</h1>,
+	'/choose': () => <Choose />,
 });
 
 Meteor.startup(() => {
@@ -24,3 +25,18 @@ Accounts.onLogin(() => {
 });
 
 Template.loginReplacement.replaces('_loginButtonsLoggedInSingleLogoutButton');
+Template.loginReplacement.helpers({
+	avatar() {
+		if (Meteor.user()) {
+			return Meteor.user.profile();
+		}
+	},
+});
+
+Accounts.onCreateUser((options, user) => {
+	if (options.profile) {
+		options.profile.picture = `https://graph.facebook.com/${user.services.facebook.id}/picture`;
+		user.profile = options.profile;
+	}
+	return user;
+});
