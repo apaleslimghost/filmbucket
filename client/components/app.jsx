@@ -6,21 +6,23 @@ import Logo from './logo';
 import Account from './account';
 import {Container, Menu, Item, Header} from 'react-semantify';
 
-export const App = ({children}) => <Container>
-	<Menu className="text">
+export const App = ({children, showMenu = true}) => <Container>
+	{showMenu && <Menu className="text">
 		<Item><Header><Logo /></Header></Item>
 		<Item className="right"><Account /></Item>
-	</Menu>
+	</Menu>}
 
 	{children}
 </Container>;
 
 App.propTypes = {
 	children: PropTypes.node.isRequired,
+	showMenu: PropTypes.bool,
 };
 
 const AppContainer = createContainer(({router}) => ({
 	children: Meteor.user() ? router() : <IntroPage />,
+	showMenu: !!Meteor.user(),
 }), App);
 
 export default AppContainer;
