@@ -2,7 +2,7 @@
   "name": "filmbucket",
   "private": true,
   "scripts": {
-    "start": "meteor run"
+    "start": "source .env.sh && meteor run"
   },
   "dependencies": {
     "boulevard": "^2.3.4",
