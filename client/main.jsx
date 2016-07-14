@@ -25,10 +25,11 @@ Accounts.onLogin(() => {
 });
 
 Template.loginReplacement.replaces('_loginButtonsLoggedInSingleLogoutButton');
-Template.loginReplacement.helpers({
+// eslint-disable-next-line no-underscore-dangle
+Template._loginButtonsLoggedInSingleLogoutButton.helpers({
 	avatar() {
 		if (Meteor.user()) {
-			return Meteor.user.profile();
+			return Meteor.user().profile.picture;
 		}
 	},
 });

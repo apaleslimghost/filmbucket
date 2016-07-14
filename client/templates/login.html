@@ -1,7 +1,7 @@
 <template name="loginReplacement">
 	<div class="ui left labeled button">
-		<div class="ui basic label">
-			<img src="{{avatar}}" class="ui image avatar">
+		<div class="ui image basic label">
+			{{#if avatar}}<img src="{{avatar}}" alt="{{displayName}}">{{/if}}
 			{{displayName}}
 		</div>
 		<a class="ui button" id="login-buttons-logout">
