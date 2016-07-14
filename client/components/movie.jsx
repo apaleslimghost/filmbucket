@@ -31,11 +31,11 @@ export const Movie = ({
 		<div className="description">
 			{movie.releaseDate && <Label className="small">
 				<Icon className="calendar" />
-				{new Date(movie.releaseDate).getFullYear()}
+				<span>{new Date(movie.releaseDate).getFullYear()}</span>
 			</Label>}
 			{!!movie.voteCount && <Label className="small">
 				<Icon className="star" />
-				{movie.voteAverage}
+				<span>{movie.voteAverage}</span>
 			</Label>}
 		</div>
 	</Content>}
