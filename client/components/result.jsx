@@ -1,9 +1,9 @@
 import {Meteor} from 'meteor/meteor';
 import React, {PropTypes} from 'react';
-import {Dimmer, Content, Icon, Loader} from 'react-semantify';
 import {createContainer} from 'meteor/react-meteor-data';
-import c from 'classnames';
 import {UserMovies} from '../../shared/collections';
+import ListDim from './list-dim';
+import component from '../component';
 
 export const Result = ({
 	children,
@@ -11,16 +11,9 @@ export const Result = ({
 	dim,
 	loading,
 	className,
+	dimmer: Dim = ListDim,
 }) => <div className={`result dimmable ${className}`}>
-	<Dimmer className={c('inverted', {'active visible': loading || dim})}>
-		{loading && <Loader />}
-		{dim && <Content>
-			<div className="center">
-				<div className="header"><Icon className="check circle big green" /></div>
-				<div className="description">In your list!</div>
-			</div>
-		</Content>}
-	</Dimmer>
+	<Dim dim={dim} loading={loading} />
 	<a onClick={onClick}>
 		{children}
 	</a>
@@ -32,6 +25,7 @@ Result.propTypes = {
 	dim: PropTypes.bool,
 	loading: PropTypes.bool,
 	className: PropTypes.string,
+	dimmer: component,
 };
 
 const ResultContainer = createContainer(({movie}) => {

@@ -35,3 +35,27 @@
   width: 4em;
   height: auto;
 }
+
+.icon:last-child:first-child {
+  margin: 0;
+}
+
+.description.tiny {
+  font-size: 0.625em;
+}
+
+.dimmer.rounded {
+  border-radius: 0.3125em;
+}
+
+.list .item.dimmable .dimmer .description {
+  color: white;
+}
+
+.ui.horizontal.list .item.dimmable {
+  padding: 0;
+}
+
+.dimmer.semi.transparent {
+  background: rgba(0, 0, 0, 0.4);
+}

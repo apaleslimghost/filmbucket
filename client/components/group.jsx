@@ -7,8 +7,9 @@ import groupBy from 'lodash.groupby';
 import mapValues from 'lodash.mapvalues';
 import Movie from './movie';
 import {Result} from './result';
+import SeenDim from './seen-dim';
 
-const Member = ({user, movies, seenMovie}) => <Item>
+const Member = ({user, movies, seeMovie, group}) => <Item>
 	<Header>{user.profile.name}</Header>
 	{
 		movies.length ?
@@ -18,9 +19,13 @@ const Member = ({user, movies, seenMovie}) => <Item>
 						key={movie._id}
 						movie={movie}
 						showContent={false}
-						selectMovie={seenMovie}
+						selectMovie={seeMovie}
 						wrapper={Result}
-						wrapProps={{className: 'item'}}
+						wrapProps={{
+							className: 'item',
+							dim: group.seen && group.seen.indexOf(movie._id) >= 0,
+							dimmer: SeenDim,
+						}}
 					/>
 				)}
 			</List> :
@@ -35,14 +40,15 @@ const Member = ({user, movies, seenMovie}) => <Item>
 Member.propTypes = {
 	user: PropTypes.object,
 	movies: PropTypes.array,
-	seenMovie: PropTypes.func,
+	seeMovie: PropTypes.func,
+	group: PropTypes.object,
 };
 
 const MemberContainer = createContainer(() => {
 	const group = Groups.findOne({members: Meteor.userId()});
 	return {
-		seenMovie(id) {
-			console.log(id, group);
+		group,
+		seeMovie(id) {
 			Groups.update({_id: group._id}, {
 				$addToSet: {
 					seen: id,
