@@ -30,3 +30,8 @@
 .item.movie .content {
   flex: 1;
 }
+
+.ui.search > .results .result .image img {
+  width: 4em;
+  height: auto;
+}
