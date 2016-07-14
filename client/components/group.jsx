@@ -6,13 +6,23 @@ import {List, Item, Header, Content} from 'react-semantify';
 import groupBy from 'lodash.groupby';
 import mapValues from 'lodash.mapvalues';
 import Movie from './movie';
+import {Result} from './result';
 
-const Member = ({user, movies}) => <Item>
+const Member = ({user, movies, seenMovie}) => <Item>
 	<Header>{user.profile.name}</Header>
 	{
 		movies.length ?
 			<List className="horizontal">
-				{movies.map(movie => <Movie key={movie._id} movie={movie} showContent={false} />)}
+				{movies.map(movie =>
+					<Movie
+						key={movie._id}
+						movie={movie}
+						showContent={false}
+						selectMovie={seenMovie}
+						wrapper={Result}
+						wrapProps={{className: 'item'}}
+					/>
+				)}
 			</List> :
 			<Content>
 				No movies yet! {
@@ -25,10 +35,27 @@ const Member = ({user, movies}) => <Item>
 Member.propTypes = {
 	user: PropTypes.object,
 	movies: PropTypes.array,
+	seenMovie: PropTypes.func,
 };
 
+const MemberContainer = createContainer(() => {
+	const group = Groups.findOne({members: Meteor.userId()});
+	return {
+		seenMovie(id) {
+			console.log(id, group);
+			Groups.update({_id: group._id}, {
+				$addToSet: {
+					seen: id,
+				},
+			});
+		},
+	};
+}, Member);
+
 export const Group = ({users, moviesByOwner}) => <List>
-{users.map(user => <Member key={user._id} user={user} movies={moviesByOwner[user._id] || []} />)}
+{users.map(
+	user => <MemberContainer key={user._id} user={user} movies={moviesByOwner[user._id] || []} />
+)}
 </List>;
 
 Group.propTypes = {

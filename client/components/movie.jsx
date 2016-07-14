@@ -14,9 +14,10 @@ export const Movie = ({
 	wrapper: Wrap = Item,
 	removeMovie,
 	showRemove,
-}) => <Wrap onClick={() => selectMovie(movie._id)} movie={movie} className="movie">
+	wrapProps = {},
+}) => <Wrap onClick={() => selectMovie(movie._id)} movie={movie} className="movie" {...wrapProps}>
 	{showRemove && <Content className="right floated">
-		<Button onClick={() => removeMovie(movie)} className="tiny red circular basic icon">
+		<Button onClick={() => removeMovie(movie)} className="mini red circular basic icon">
 			<Icon className="remove" />
 		</Button>
 	</Content>}
@@ -47,6 +48,7 @@ Movie.propTypes = {
 	wrapper: component,
 	showRemove: PropTypes.bool,
 	removeMovie: PropTypes.func,
+	wrapProps: PropTypes.object,
 };
 
 const MovieContainer = createContainer(({showRemove}) => {

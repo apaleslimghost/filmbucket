@@ -5,7 +5,13 @@ import {createContainer} from 'meteor/react-meteor-data';
 import c from 'classnames';
 import {UserMovies} from '../../shared/collections';
 
-const Result = ({children, onClick, dim, loading}) => <div className="result dimmable">
+export const Result = ({
+	children,
+	onClick,
+	dim,
+	loading,
+	className,
+}) => <div className={`result dimmable ${className}`}>
 	<Dimmer className={c('inverted', {'active visible': loading || dim})}>
 		{loading && <Loader />}
 		{dim && <Content>
@@ -25,6 +31,7 @@ Result.propTypes = {
 	onClick: PropTypes.func,
 	dim: PropTypes.bool,
 	loading: PropTypes.bool,
+	className: PropTypes.string,
 };
 
 const ResultContainer = createContainer(({movie}) => {
