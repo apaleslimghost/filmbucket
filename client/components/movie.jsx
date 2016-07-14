@@ -14,9 +14,16 @@ export const Movie = ({
 	wrapper: Wrap = Item,
 	removeMovie,
 	showRemove,
-}) => <Wrap onClick={() => selectMovie(movie._id)} movie={movie}>
+}) => <Wrap onClick={() => selectMovie(movie._id)} movie={movie} className="movie">
+	{showRemove && <Content className="right floated">
+		<Button onClick={() => removeMovie(movie)} className="tiny red circular basic icon">
+			<Icon className="remove" />
+		</Button>
+	</Content>}
 	{movie.posterPath &&
-		<Image src={imageUrl(movie.posterPath, {size: 'w92'})} className="mini rounded" />
+		<div className="image">
+			<Image src={imageUrl(movie.posterPath, {size: 'w92'})} className="mini rounded" />
+		</div>
 	}
 	{showContent && <Content>
 		<Header className="small">{movie.title}</Header>
@@ -29,12 +36,6 @@ export const Movie = ({
 				<Icon className="star" />
 				{movie.voteAverage}
 			</Label>}
-			{showRemove &&
-				<Button onClick={() => removeMovie(movie)} className="small negative right">
-					<Icon className="remove" />
-					Remove from list
-				</Button>
-			}
 		</div>
 	</Content>}
 </Wrap>;

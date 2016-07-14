@@ -15,3 +15,18 @@
 .ui.labeled.button .ui.label.image img {
   height: 2.36em !important; /* whyyyy */
 }
+
+.ui.list:not(.horizontal) > .item.movie {
+  display: flex;
+}
+
+.item.movie .content.right {
+  order: 3;
+  display: flex;
+  align-items: center;
+  flex: 0;
+}
+
+.item.movie .content {
+  flex: 1;
+}
