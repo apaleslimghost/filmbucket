@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import {Meteor} from 'meteor/meteor';
 import {createContainer} from 'meteor/react-meteor-data';
-import {Button, Icon, Grid, Column, Loader, Input, Header} from 'react-semantify';
+import {Icon, Grid, Column, Loader, Input, Header, Label, Divider} from 'react-semantify';
 import copyToClipboard from 'copy-to-clipboard';
 import qs from 'querystring';
 import {Groups} from '../../shared/collections';
@@ -15,13 +15,17 @@ const Invite = ({
 }) => (loading ? <Loader /> : <Grid className="center aligned">
 	<Column className="six wide">
 		<Header>Invite users</Header>
-		<p>{helpText}</p>
-		<Input className="right action large fluid">
-			<input readOnly type="url" value={inviteUrl} onFocus={selectInput} />
-			<Button className="blue icon" onClick={copyUrl}>
-				<Icon className="copy" />
-			</Button>
-		</Input>
+		<div className="field">
+			<Label className="right pointing outside basic blue">
+				Send this link to invite
+			</Label>
+			<Input className="fluid icon muted">
+				<input readOnly type="url" value={inviteUrl} onFocus={selectInput} />
+				<Icon className="copy inverted circular link" onClick={copyUrl} />
+			</Input>
+		</div>
+		<Divider className="section" />
+		<p className="muted">{helpText}</p>
 	</Column>
 </Grid>);
 
@@ -53,7 +57,7 @@ const InviteContainer = createContainer(() => {
 			copyToClipboard(inviteUrl);
 		},
 
-		helpText: `Send new users the link below to invite them to your group. When
+		helpText: `Send new users the link to invite them to your group. When
 		they sign up, they'll automatically become a member. They'll see your name on
 		the signup page.`,
 	};
