@@ -69,6 +69,10 @@ a.label {
   user-select: none;
 }
 
+a.label.disabled {
+  pointer-events: none;
+}
+
 .field {
   width: 100%;
   position: relative;

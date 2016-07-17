@@ -52,7 +52,10 @@ export const Choose = ({
 			<List className="horizontal">
 				{users.map(user => <Item key={user._id}>
 					<a
-						className={c('ui label image large', {green: usersSelected[user._id]})}
+						className={c('ui label image large', {
+							green: usersSelected[user._id],
+							disabled: !currentStep,
+						})}
 						onClick={() => toggleSelected(user)}
 					>
 						<Image src={user.profile.picture} />
