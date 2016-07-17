@@ -44,3 +44,8 @@ Meteor.publishComposite('group', {
 		},
 	}, userMoviePublish(group => (group ? group.members : []))],
 });
+
+
+Meteor.publish('invitedUser', (userId) =>
+	Meteor.users.find({_id: userId}, {fields: {profile: true}})
+);

@@ -34,7 +34,7 @@ Accounts.onLogin(() => {
 	Meteor.call('ensureGroup', group, invitedBy);
 });
 
-Template.loginReplacement.replaces('_loginButtonsLoggedInSingleLogoutButton');
+Template.loggedInSingleLogoutButtonReplacement.replaces('_loginButtonsLoggedInSingleLogoutButton');
 // eslint-disable-next-line no-underscore-dangle
 Template._loginButtonsLoggedInSingleLogoutButton.helpers({
 	avatar() {
@@ -42,4 +42,23 @@ Template._loginButtonsLoggedInSingleLogoutButton.helpers({
 			return Meteor.user().profile.picture;
 		}
 	},
+});
+
+Template.loggedOutSingleLoginButtonReplacement.replaces('_loginButtonsLoggedOutSingleLoginButton');
+// eslint-disable-next-line no-underscore-dangle
+Template._loginButtonsLoggedOutSingleLoginButton.helpers({
+	invitedBy() {
+		return Template.instance().invitedBy;
+	},
+});
+// eslint-disable-next-line no-underscore-dangle
+Template._loginButtonsLoggedOutSingleLoginButton.onRendered(function onRendered() {
+	const {invitedBy} = qs.parse(location.search.slice(1));
+	if (invitedBy) {
+		this.autorun(() => {
+			this.subscribe('invitedUser', invitedBy, () => {
+				this.invitedBy = Meteor.users.findOne(invitedBy).profile.name;
+			});
+		});
+	}
 });
