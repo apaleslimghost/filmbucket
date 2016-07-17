@@ -43,8 +43,8 @@ export const Choose = ({
 	movieChoice,
 	chooseMovie,
 	finished,
-}) => <Grid className="center aligned">
-	<Column className="six wide left aligned">
+}) => <Grid className="center aligned stackable">
+	<Column className="eight wide left aligned">
 	{loading ? <Loader /> : <div>{joinAndKey([
 		({currentStep, previousStep}) => [
 			<Header>Who's here?</Header>,
