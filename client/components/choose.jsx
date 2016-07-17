@@ -12,6 +12,8 @@ import mapValues from 'lodash.mapvalues';
 import some from 'lodash.some';
 import joinAndKey from '../join-and-key';
 import HorizontalMovieList from './horizontal-movie-list';
+import Movie from './movie';
+import {navigate} from '../history';
 
 export const Choose = ({
 	group,
@@ -28,6 +30,8 @@ export const Choose = ({
 	manualChoice,
 	prevStep,
 	movieChoice,
+	chooseMovie,
+	finished,
 }) => <div>
 	{loading ? <Loader /> : <div>{joinAndKey([
 		({currentStep, previousStep}) => [
@@ -75,10 +79,22 @@ export const Choose = ({
 		],
 		() => (random ? [
 			<Header>You're watching {movieChoice.title}!</Header>,
+			<Movie movie={movieChoice} />,
 		] : [
 			<Header>Your movies</Header>,
-			<HorizontalMovieList movies={moviesByOwner[chooser._id]} seen={group.seen} />,
-		]),
+			<HorizontalMovieList
+				movies={moviesByOwner[chooser._id]}
+				seen={group.seen}
+				selectMovie={chooseMovie}
+			/>,
+		].concat(
+			movieChoice ? <Movie movie={movieChoice} /> : []
+		)).concat(movieChoice ? <Divider className="horizontal header">
+			<Button className="blue" onClick={finished}>
+				<Icon className="film" />
+				Sounds good!
+			</Button>
+		</Divider> : []),
 	].slice(0, step + 1).map((f, i) => f({
 		currentStep: step === i,
 		previousStep: step - 1 === i,
@@ -99,7 +115,9 @@ Choose.propTypes = {
 	randomChoice: PropTypes.func,
 	manualChoice: PropTypes.func,
 	prevStep: PropTypes.func,
+	chooseMovie: PropTypes.func,
 	movieChoice: PropTypes.object,
+	finished: PropTypes.func,
 };
 
 export default createContainer(({selected, step, chooser, random, chosenMovie}) => {
@@ -151,11 +169,20 @@ export default createContainer(({selected, step, chooser, random, chosenMovie}) 
 			nextStep();
 		},
 		manualChoice() {
+			chosenMovie.set(false);
 			random.set(false);
 			nextStep();
 		},
+		chooseMovie: chosenMovie.set.bind(chosenMovie),
 		moviesByOwner,
 		prevStep,
 		movieChoice,
+		finished() {
+			Groups.update(group._id, {
+				$addToSet: {seen: chosenMovie.get()},
+				$push: {chosen: chooser.get()},
+			});
+			navigate('/');
+		},
 	};
 }, Choose);
