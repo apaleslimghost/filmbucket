@@ -14,8 +14,10 @@ export const MovieList = ({
 	className,
 	loading = false,
 	showRemove = false,
+	helpText,
 }) => <Wrap {...{className}}>
-	{loading ? <ItemWrap><Loader /></ItemWrap> : movies.map(
+	{loading && <ItemWrap><Loader /></ItemWrap>}
+	{!loading && (movies.length ? movies.map(
 		movie => <Movie
 			movie={movie}
 			selectMovie={selectMovie}
@@ -23,7 +25,7 @@ export const MovieList = ({
 			wrapper={ItemWrap}
 			showRemove={showRemove}
 		/>
-	)}
+	) : <ItemWrap><p className="muted">{helpText}</p></ItemWrap>)}
 </Wrap>;
 
 MovieList.propTypes = {
@@ -34,6 +36,7 @@ MovieList.propTypes = {
 	className: PropTypes.string,
 	loading: PropTypes.bool,
 	showRemove: PropTypes.bool,
+	helpText: PropTypes.string,
 };
 
 const ListContainer = createContainer(() => {
@@ -48,6 +51,10 @@ const ListContainer = createContainer(() => {
 			_id: {$in: userMovieIds},
 		}).fetch(),
 		loading: !userMoviesCursor.ready(),
+		helpText: `Add the movies you think everyone should see before they die.
+		Because it's amazing. Because it makes you think. Because it makes you cry.
+		Because who cares about the reviews, I like it and dammit you're watching
+		it.`,
 	};
 }, MovieList);
 

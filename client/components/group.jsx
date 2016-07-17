@@ -10,16 +10,16 @@ import HorizontalMovieList from './horizontal-movie-list';
 const Member = ({user, movies, seeMovie, group}) => <Item>
 	<Header>{user.profile.name}</Header>
 	{
-		movies.length ?
-			<HorizontalMovieList movies={movies} seen={group.seen} selectMovie={seeMovie} /> :
-			<Content>
-				No movies yet! {
-					user._id === Meteor.userId() && 'Add some on the left.'
-				}
-			</Content>
+		movies.length ? <div>
+			<HorizontalMovieList movies={movies} seen={group.seen} selectMovie={seeMovie} />
+			<Divider />
+			<p className="muted">Tap the movies your group's already seen.</p>
+		</div> : <Content>
+			<p className="muted">No movies yet! {
+				user._id === Meteor.userId() && 'Add some on the left.'
+			}</p>
+		</Content>
 	}
-	<Divider />
-	<p className="muted">Tap the movies your group's already seen.</p>
 </Item>;
 
 Member.propTypes = {
