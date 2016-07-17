@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 import {createContainer} from 'meteor/react-meteor-data';
 import {Meteor} from 'meteor/meteor';
 import {Groups, UserMovies, Movies} from '../../shared/collections';
-import {List, Item, Header, Content} from 'react-semantify';
+import {List, Item, Header, Content, Divider} from 'react-semantify';
 import groupBy from 'lodash.groupby';
 import mapValues from 'lodash.mapvalues';
 import HorizontalMovieList from './horizontal-movie-list';
@@ -18,6 +18,8 @@ const Member = ({user, movies, seeMovie, group}) => <Item>
 				}
 			</Content>
 	}
+	<Divider />
+	<p className="muted">Tap the movies your group's already seen.</p>
 </Item>;
 
 Member.propTypes = {
