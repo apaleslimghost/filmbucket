@@ -36,7 +36,8 @@
   height: auto;
 }
 
-.icon:last-child:first-child {
+.ui.header > .icon:only-child,
+.icon:only-child {
   margin: 0;
 }
 

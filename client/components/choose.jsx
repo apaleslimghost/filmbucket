@@ -3,14 +3,18 @@ import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
 import {createContainer} from 'meteor/react-meteor-data';
 import {Header, Divider, List, Item, Image, Loader, Icon, Button} from 'react-semantify';
-import {Groups} from '../../shared/collections';
+import {Movies, UserMovies, Groups} from '../../shared/collections';
 import c from 'classnames';
 import belowMedian from '@quarterto/below-median';
 import intersection from 'lodash.intersection';
+import groupBy from 'lodash.groupby';
+import mapValues from 'lodash.mapvalues';
 import size from 'lodash.size';
 import joinAndKey from '../join-and-key';
+import HorizontalMovieList from './horizontal-movie-list';
 
 export const Choose = ({
+	group,
 	users,
 	loading,
 	usersSelected,
@@ -18,9 +22,14 @@ export const Choose = ({
 	getChooser,
 	chooser,
 	step,
+	random,
+	moviesByOwner,
+	randomChoice,
+	manualChoice,
+	prevStep,
 }) => <div>
 	{loading ? <Loader /> : <div>{joinAndKey([
-		() => [
+		({currentStep, previousStep}) => [
 			<Header>Who's here?</Header>,
 			<List className="horizontal">
 				{users.map(user => <Item key={user._id}>
@@ -37,29 +46,46 @@ export const Choose = ({
 				</Item>)}
 			</List>,
 
-			<Divider className={c({horizontal: step === 0 && !!size(usersSelected)}, 'header')}>
-				{step === 0 && !!size(usersSelected) &&
-					<Button className="basic green circular small" onClick={getChooser}>Next...</Button>}
+			<Divider className={c({horizontal: !!size(usersSelected) || previousStep}, 'header')}>
+				{currentStep ?
+					(!!size(usersSelected) &&
+						<Button className="small" onClick={getChooser}>Next...</Button>) :
+					(previousStep &&
+						<Icon className="angle up link" onClick={prevStep} />)
+					}
 			</Divider>,
 		],
-		() => [
+		({currentStep, previousStep}) => [
 			<Header>{chooser.profile.name}, it's your turn</Header>,
-			<Divider className={c({horizontal: step === 1}, 'header')}>
-				{step === 1 &&
+			<Divider className={c({horizontal: currentStep || previousStep}, 'header')}>
+				{currentStep ?
 					<div className="ui buttons small">
-						<Button className="purple" onClick={() => alert('random')}>
+						<Button className="purple" onClick={randomChoice}>
 							<Icon className="shuffle" />
 							Random movie
 						</Button>
 						<div className="or" />
-						<Button onClick={() => alert('choose')}>Choose a movie</Button>
-					</div>}
+						<Button onClick={manualChoice}>Choose a movie</Button>
+					</div> :
+					(previousStep &&
+						<Icon className="angle up link" onClick={prevStep} />)
+				}
 			</Divider>,
 		],
-	].slice(0, step + 1).map(f => f()))}</div>}
+		() => (random ? [
+			<Header>You're watching {'blah'}!</Header>,
+		] : [
+			<Header>Your movies</Header>,
+			<HorizontalMovieList movies={moviesByOwner[chooser._id]} seen={group.seen} />,
+		]),
+	].slice(0, step + 1).map((f, i) => f({
+		currentStep: step === i,
+		previousStep: step - 1 === i,
+	})))}</div>}
 </div>;
 
 Choose.propTypes = {
+	group: PropTypes.object,
 	users: PropTypes.array,
 	loading: PropTypes.bool,
 	usersSelected: PropTypes.object,
@@ -67,21 +93,43 @@ Choose.propTypes = {
 	getChooser: PropTypes.func,
 	step: PropTypes.number,
 	chooser: PropTypes.object,
+	random: PropTypes.bool,
+	moviesByOwner: PropTypes.object,
+	randomChoice: PropTypes.func,
+	manualChoice: PropTypes.func,
+	prevStep: PropTypes.func,
 };
 
-export default createContainer(({selected, step, nextStep, chooser}) => {
+export default createContainer(({selected, step, chooser, random}) => {
 	const groupCursor = Meteor.subscribe('group');
 	const group = Groups.findOne({members: Meteor.userId()});
 	const selectedUsers = Object.keys(selected.all());
+	const userMovies = UserMovies.find({
+		owner: {
+			$in: group ? group.members : [],
+		},
+	}).fetch();
+	const userMoviesByOwner = groupBy(userMovies, userMovie => userMovie.owner);
+	const moviesByOwner = mapValues(
+		userMoviesByOwner,
+		movies => movies.map(
+			({movie}) => Movies.findOne(movie) || {}
+		)
+	);
+
+	const nextStep = () => step.set(step.get() + 1);
+	const prevStep = () => step.set(Math.max(step.get() - 1, 0));
 
 	return {
 		loading: !groupCursor.ready(),
+		group,
 		users: Meteor.users.find({_id: {$in: group ? group.members : []}}).fetch(),
 		usersSelected: selected.all(),
 		toggleSelected({_id}) {
 			selected.set(_id, !selected.get(_id));
 		},
 		step: step.get(),
+		random: random.get(),
 		chooser: Meteor.users.findOne({_id: chooser.get()}),
 		getChooser() {
 			const chosen = group.chosen || [];
@@ -90,5 +138,15 @@ export default createContainer(({selected, step, nextStep, chooser}) => {
 			chooser.set(Random.choice(validChoosers));
 			nextStep();
 		},
+		randomChoice() {
+			random.set(true);
+			nextStep();
+		},
+		manualChoice() {
+			random.set(false);
+			nextStep();
+		},
+		moviesByOwner,
+		prevStep,
 	};
 }, Choose);

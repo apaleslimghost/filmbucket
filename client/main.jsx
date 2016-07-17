@@ -17,9 +17,9 @@ const router = route({
 	'/choose': () => {
 		const selected = new ReactiveDict();
 		const step = new ReactiveVar(0);
-		const nextStep = () => step.set(step.get() + 1);
 		const chooser = new ReactiveVar();
-		return <Choose {...{selected, step, nextStep, chooser}} />;
+		const random = new ReactiveVar();
+		return <Choose {...{selected, step, chooser, random}} />;
 	},
 });
 
