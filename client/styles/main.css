@@ -63,3 +63,7 @@
 .ui.list > .item > .image.label {
   background: #e8e8e8;
 }
+
+a.label {
+  user-select: none;
+}
