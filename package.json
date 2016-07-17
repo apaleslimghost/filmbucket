@@ -5,6 +5,7 @@
     "start": "source .env.sh && meteor run"
   },
   "dependencies": {
+    "@quarterto/below-median": "^1.1.0",
     "boulevard": "^2.3.4",
     "camel-case": "^1.2.2",
     "classnames": "^2.2.5",
