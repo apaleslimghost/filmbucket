@@ -1,10 +1,12 @@
 import React, {PropTypes} from 'react';
 import {Meteor} from 'meteor/meteor';
+import {ReactiveVar} from 'meteor/reactive-var';
 import {createContainer} from 'meteor/react-meteor-data';
 import {Icon, Grid, Column, Loader, Input, Header, Label, Divider} from 'react-semantify';
 import copyToClipboard from 'copy-to-clipboard';
 import qs from 'querystring';
 import {Groups} from '../../shared/collections';
+import c from 'classnames';
 
 const Invite = ({
 	inviteUrl,
@@ -12,6 +14,7 @@ const Invite = ({
 	selectInput,
 	copyUrl,
 	helpText,
+	copied,
 }) => (loading ? <Loader /> : <Grid className="center aligned">
 	<Column className="six wide">
 		<Header>Invite users</Header>
@@ -21,7 +24,16 @@ const Invite = ({
 			</Label>
 			<Input className="fluid icon muted">
 				<input readOnly type="url" value={inviteUrl} onFocus={selectInput} />
-				<Icon className="copy inverted circular link" onClick={copyUrl} />
+				<Icon
+					className={c(
+						'circular link',
+						{
+							'check inverted green': copied,
+							'copy inverted': !copied,
+						}
+					)}
+					onClick={copyUrl}
+				/>
 			</Input>
 		</div>
 		<Divider className="section" />
@@ -35,7 +47,10 @@ Invite.propTypes = {
 	copyUrl: PropTypes.func,
 	loading: PropTypes.bool,
 	helpText: PropTypes.string,
+	copied: PropTypes.bool,
 };
+
+const copied = new ReactiveVar(false);
 
 const InviteContainer = createContainer(() => {
 	const sub = Meteor.subscribe('group');
@@ -48,6 +63,7 @@ const InviteContainer = createContainer(() => {
 	return {
 		loading: !sub.ready(),
 		inviteUrl,
+		copied: copied.get(),
 
 		selectInput(ev) {
 			ev.currentTarget.select();
@@ -55,6 +71,7 @@ const InviteContainer = createContainer(() => {
 
 		copyUrl() {
 			copyToClipboard(inviteUrl);
+			copied.set(true);
 		},
 
 		helpText: `Send new users the link to invite them to your group. When
