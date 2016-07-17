@@ -5,8 +5,12 @@ import IntroPage from './intro-page';
 import Logo from './logo';
 import Account from './account';
 import {Container, Menu, Item, Header} from 'react-semantify';
+import c from 'classnames';
 
-export const App = ({children, showMenu = true}) => <Container>
+export const App = ({
+	children,
+	showMenu = true,
+}) => <Container className={c({fullheight: !showMenu})}>
 	{showMenu && <Menu className="text">
 		<Item><Header><Logo /></Header></Item>
 		<Item className="right"><Account /></Item>
