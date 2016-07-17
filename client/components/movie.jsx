@@ -29,6 +29,7 @@ export const Movie = ({
 	}
 	{showContent && <Content>
 		<Header className="small">{movie.title}</Header>
+		<p className="muted">{movie.tagline}</p>
 		<div className="description">
 			{movie.releaseDate && <Label className="small">
 				<Icon className="calendar" />

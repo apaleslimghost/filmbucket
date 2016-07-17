@@ -2,7 +2,18 @@ import React, {PropTypes} from 'react';
 import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
 import {createContainer} from 'meteor/react-meteor-data';
-import {Header, Divider, List, Item, Image, Loader, Icon, Button} from 'react-semantify';
+import {
+	Header,
+	Divider,
+	List,
+	Item,
+	Image,
+	Loader,
+	Icon,
+	Button,
+	Grid,
+	Column,
+} from 'react-semantify';
 import {Movies, UserMovies, Groups} from '../../shared/collections';
 import c from 'classnames';
 import belowMedian from '@quarterto/below-median';
@@ -32,10 +43,12 @@ export const Choose = ({
 	movieChoice,
 	chooseMovie,
 	finished,
-}) => <div>
+}) => <Grid className="center aligned">
+	<Column className="six wide left aligned">
 	{loading ? <Loader /> : <div>{joinAndKey([
 		({currentStep, previousStep}) => [
 			<Header>Who's here?</Header>,
+			<p className="muted">Who's in the room tonight? Filmbucket will pick someone at random.</p>,
 			<List className="horizontal">
 				{users.map(user => <Item key={user._id}>
 					<a
@@ -69,6 +82,7 @@ export const Choose = ({
 		],
 		({currentStep, previousStep}) => [
 			<Header>{chooser.profile.name}, it's your turn</Header>,
+			<p className="muted">Do you want Filmbucket to choose the movie? Or do you have something in mind?</p>,
 			<Divider className={c({horizontal: currentStep || previousStep}, 'header')}>
 				{currentStep ?
 					<div className="ui buttons small">
@@ -85,8 +99,8 @@ export const Choose = ({
 			</Divider>,
 		],
 		() => (random ? [
-			<Header>You're watching {movieChoice.title}!</Header>,
-			<Movie movie={movieChoice} />,
+			<Header>How about <em>{movieChoice.title}</em>?</Header>,
+			<List><Movie movie={movieChoice} /></List>,
 		] : [
 			<Header>Your movies</Header>,
 			<HorizontalMovieList
@@ -95,7 +109,10 @@ export const Choose = ({
 				selectMovie={chooseMovie}
 			/>,
 		].concat(
-			movieChoice ? <Movie movie={movieChoice} /> : []
+			movieChoice ? [
+				<Divider className="section" />,
+				<List><Movie movie={movieChoice} /></List>,
+			] : []
 		)).concat(movieChoice ? <Divider className="horizontal header">
 			<Button className="blue" onClick={finished}>
 				<Icon className="film" />
@@ -106,7 +123,8 @@ export const Choose = ({
 		currentStep: step === i,
 		previousStep: step - 1 === i,
 	})))}</div>}
-</div>;
+</Column>
+</Grid>;
 
 Choose.propTypes = {
 	group: PropTypes.object,
@@ -174,7 +192,7 @@ export default createContainer(({selected, step, chooser, random, chosenMovie}) 
 				.filter(({_id}) => group.seen.indexOf(_id) === -1);
 			const validMovies = unseenMovies.length ? unseenMovies : yourMovies;
 
-			chosenMovie.set(Random.choice(validMovies));
+			chosenMovie.set(Random.choice(validMovies)._id);
 			random.set(true);
 			nextStep();
 		},

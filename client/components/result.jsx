@@ -37,7 +37,7 @@ const ResultContainer = createContainer(({movie}) => {
 	const sub = Meteor.subscribe('usermovies');
 	return {
 		loading: !sub.ready(),
-		dim: sub.ready() && !!UserMovies.findOne({movie: movie._id}),
+		dim: sub.ready() && !!UserMovies.findOne({movie: movie && movie._id}),
 	};
 }, Result);
 
