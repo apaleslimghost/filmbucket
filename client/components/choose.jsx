@@ -58,7 +58,10 @@ export const Choose = ({
 			>
 				{currentStep ?
 					(some(usersSelected) &&
-						<Button className="small" onClick={getChooser}>Next...</Button>) :
+						<Button className="small" onClick={getChooser}>
+							<Icon className="group" />
+							That's everyone
+						</Button>) :
 					(previousStep &&
 						<Icon className="angle up link" onClick={prevStep} />)
 					}
