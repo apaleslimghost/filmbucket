@@ -5,30 +5,13 @@ import {Groups, UserMovies, Movies} from '../../shared/collections';
 import {List, Item, Header, Content} from 'react-semantify';
 import groupBy from 'lodash.groupby';
 import mapValues from 'lodash.mapvalues';
-import Movie from './movie';
-import {Result} from './result';
-import SeenDim from './seen-dim';
+import HorizontalMovieList from './horizontal-movie-list';
 
 const Member = ({user, movies, seeMovie, group}) => <Item>
 	<Header>{user.profile.name}</Header>
 	{
 		movies.length ?
-			<List className="horizontal">
-				{movies.map(movie =>
-					<Movie
-						key={movie._id}
-						movie={movie}
-						showContent={false}
-						selectMovie={seeMovie}
-						wrapper={Result}
-						wrapProps={{
-							className: 'item',
-							dim: group.seen && group.seen.indexOf(movie._id) >= 0,
-							dimmer: SeenDim,
-						}}
-					/>
-				)}
-			</List> :
+			<HorizontalMovieList movies={movies} seen={group.seen} selectMovie={seeMovie} /> :
 			<Content>
 				No movies yet! {
 					user._id === Meteor.userId() && 'Add some on the left.'
