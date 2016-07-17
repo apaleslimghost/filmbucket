@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import {Meteor} from 'meteor/meteor';
 import {ReactiveDict} from 'meteor/reactive-dict';
 import {ReactiveVar} from 'meteor/reactive-var';
@@ -7,27 +7,48 @@ import {Header, Divider, List, Item, Image, Loader, Icon, Button} from 'react-se
 import {Groups} from '../../shared/collections';
 import c from 'classnames';
 
-export const Choose = ({users, loading, usersSelected, toggleSelected, nextStep, step}) => loading ? <Loader /> : <div>
-	<Header>Who's here?</Header>
-	<List className="horizontal">
-		{users.map(user => <Item key={user._id}>
-			<a className={c('ui label image large', {green: usersSelected[user._id]})} onClick={() => toggleSelected(user)}>
-				<Image src={user.profile.picture} />
-				{user.profile.name}
-				{usersSelected[user._id] && <div className="detail"><Icon className="check" /></div>}
-			</a>
-		</Item>)}
-	</List>
+export const Choose = ({
+	users,
+	loading,
+	usersSelected,
+	toggleSelected,
+	nextStep,
+	step,
+}) => <div>
+	{loading ? <Loader /> : <div>
+		<Header>Who's here?</Header>
+		<List className="horizontal">
+			{users.map(user => <Item key={user._id}>
+				<a
+					className={c('ui label image large', {green: usersSelected[user._id]})}
+					onClick={() => toggleSelected(user)}
+				>
+					<Image src={user.profile.picture} />
+					{user.profile.name}
+					{usersSelected[user._id] && <div className="detail"><Icon className="check" /></div>}
+				</a>
+			</Item>)}
+		</List>
 
-	{step >= 1 && <div>
-		<Divider />
-		<Header>Matt Brennan, it's your turn</Header>
+		{step >= 1 && <div>
+			<Divider />
+			<Header>Matt Brennan, it's your turn</Header>
+		</div>}
+
+		<Divider className="horizontal header">
+			<Button className="basic green circular small" onClick={nextStep}>Next...</Button>
+		</Divider>
 	</div>}
-
-	<Divider className="horizontal header">
-		<Button className="basic green circular small" onClick={nextStep}>Next...</Button>
-	</Divider>
 </div>;
+
+Choose.propTypes = {
+	users: PropTypes.array,
+	loading: PropTypes.bool,
+	usersSelected: PropTypes.object,
+	toggleSelected: PropTypes.func,
+	nextStep: PropTypes.func,
+	step: PropTypes.number,
+};
 
 const selected = new ReactiveDict();
 const step = new ReactiveVar(0);
