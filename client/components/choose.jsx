@@ -164,12 +164,15 @@ export default createContainer(({selected, step, chooser, random, chosenMovie}) 
 			const chosen = group.chosen || [];
 			const notChosenMuch = belowMedian(intersection(chosen, selectedUsers));
 			const validChoosers = notChosenMuch.length ? notChosenMuch : selectedUsers;
+
 			chooser.set(Random.choice(validChoosers));
 			nextStep();
 		},
 		randomChoice() {
-			const validMovies = moviesByOwner[chooser.get()]
+			const yourMovies = moviesByOwner[chooser.get()];
+			const unseenMovies = yourMovies
 				.filter(({_id}) => group.seen.indexOf(_id) === -1);
+			const validMovies = unseenMovies.length ? unseenMovies : yourMovies;
 
 			chosenMovie.set(Random.choice(validMovies));
 			random.set(true);

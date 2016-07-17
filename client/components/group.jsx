@@ -32,8 +32,9 @@ const MemberContainer = createContainer(() => {
 	return {
 		group,
 		seeMovie(id) {
+			const seen = (group.seen || []).indexOf(id) >= 0;
 			Groups.update({_id: group._id}, {
-				$addToSet: {
+				[seen ? '$pull' : '$addToSet']: {
 					seen: id,
 				},
 			});

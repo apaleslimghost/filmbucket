@@ -20,6 +20,7 @@ const HorizontalMovieList = ({
 				className: 'item',
 				dim: seen && seen.indexOf(movie._id) >= 0,
 				dimmer: SeenDim,
+				dimBlocksClick: false,
 			}}
 		/>
 	)}
