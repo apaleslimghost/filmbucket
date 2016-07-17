@@ -9,7 +9,7 @@ import belowMedian from '@quarterto/below-median';
 import intersection from 'lodash.intersection';
 import groupBy from 'lodash.groupby';
 import mapValues from 'lodash.mapvalues';
-import size from 'lodash.size';
+import some from 'lodash.some';
 import joinAndKey from '../join-and-key';
 import HorizontalMovieList from './horizontal-movie-list';
 
@@ -47,9 +47,9 @@ export const Choose = ({
 				</Item>)}
 			</List>,
 
-			<Divider className={c({horizontal: !!size(usersSelected) || previousStep}, 'header')}>
+			<Divider className={c({horizontal: some(usersSelected) || previousStep}, 'header')}>
 				{currentStep ?
-					(!!size(usersSelected) &&
+					(some(usersSelected) &&
 						<Button className="small" onClick={getChooser}>Next...</Button>) :
 					(previousStep &&
 						<Icon className="angle up link" onClick={prevStep} />)

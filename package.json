@@ -17,7 +17,7 @@
     "lodash.intersection": "^4.2.0",
     "lodash.keyby": "^4.4.0",
     "lodash.mapvalues": "^4.4.0",
-    "lodash.size": "^4.0.6",
+    "lodash.some": "^4.3.0",
     "meteor-node-stubs": "^0.2.3",
     "react": "^15.1.0",
     "react-addons-pure-render-mixin": "^15.1.0",
