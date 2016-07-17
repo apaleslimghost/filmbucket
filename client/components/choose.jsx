@@ -51,7 +51,11 @@ export const Choose = ({
 				</Item>)}
 			</List>,
 
-			<Divider className={c({horizontal: some(usersSelected) || previousStep}, 'header')}>
+			<Divider
+				className={c({
+					horizontal: currentStep ? some(usersSelected) : previousStep,
+				}, 'header')}
+			>
 				{currentStep ?
 					(some(usersSelected) &&
 						<Button className="small" onClick={getChooser}>Next...</Button>) :
