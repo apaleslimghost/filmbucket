@@ -27,6 +27,7 @@ export const Choose = ({
 	randomChoice,
 	manualChoice,
 	prevStep,
+	movieChoice,
 }) => <div>
 	{loading ? <Loader /> : <div>{joinAndKey([
 		({currentStep, previousStep}) => [
@@ -73,7 +74,7 @@ export const Choose = ({
 			</Divider>,
 		],
 		() => (random ? [
-			<Header>You're watching {'blah'}!</Header>,
+			<Header>You're watching {movieChoice.title}!</Header>,
 		] : [
 			<Header>Your movies</Header>,
 			<HorizontalMovieList movies={moviesByOwner[chooser._id]} seen={group.seen} />,
@@ -98,9 +99,10 @@ Choose.propTypes = {
 	randomChoice: PropTypes.func,
 	manualChoice: PropTypes.func,
 	prevStep: PropTypes.func,
+	movieChoice: PropTypes.object,
 };
 
-export default createContainer(({selected, step, chooser, random}) => {
+export default createContainer(({selected, step, chooser, random, chosenMovie}) => {
 	const groupCursor = Meteor.subscribe('group');
 	const group = Groups.findOne({members: Meteor.userId()});
 	const selectedUsers = Object.keys(selected.all());
@@ -116,6 +118,8 @@ export default createContainer(({selected, step, chooser, random}) => {
 			({movie}) => Movies.findOne(movie) || {}
 		)
 	);
+
+	const movieChoice = Movies.findOne(chosenMovie.get());
 
 	const nextStep = () => step.set(step.get() + 1);
 	const prevStep = () => step.set(Math.max(step.get() - 1, 0));
@@ -139,6 +143,10 @@ export default createContainer(({selected, step, chooser, random}) => {
 			nextStep();
 		},
 		randomChoice() {
+			const validMovies = moviesByOwner[chooser.get()]
+				.filter(({_id}) => group.seen.indexOf(_id) === -1);
+
+			chosenMovie.set(Random.choice(validMovies));
 			random.set(true);
 			nextStep();
 		},
@@ -148,5 +156,6 @@ export default createContainer(({selected, step, chooser, random}) => {
 		},
 		moviesByOwner,
 		prevStep,
+		movieChoice,
 	};
 }, Choose);

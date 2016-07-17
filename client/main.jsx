@@ -19,7 +19,8 @@ const router = route({
 		const step = new ReactiveVar(0);
 		const chooser = new ReactiveVar();
 		const random = new ReactiveVar();
-		return <Choose {...{selected, step, chooser, random}} />;
+		const chosenMovie = new ReactiveVar();
+		return <Choose {...{selected, step, chooser, random, chosenMovie}} />;
 	},
 });
 
