@@ -18,7 +18,7 @@ export const navigate = url => {
 
 export const link = ev => {
 	ev.preventDefault();
-	navigate(ev.target.pathname);
+	navigate(ev.currentTarget.pathname);
 };
 
 export const start = () => {

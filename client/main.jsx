@@ -11,17 +11,18 @@ import route from './router';
 import App from './components/app';
 import Dashboard from './components/dashboard';
 import Choose from './components/choose';
+import Invite from './components/invite';
 
 const router = route({
 	'/': () => <Dashboard />,
-	'/choose': () => {
-		const selected = new ReactiveDict();
-		const step = new ReactiveVar(0);
-		const chooser = new ReactiveVar();
-		const random = new ReactiveVar();
-		const chosenMovie = new ReactiveVar();
-		return <Choose {...{selected, step, chooser, random, chosenMovie}} />;
-	},
+	'/choose': () => <Choose
+		selected={new ReactiveDict()}
+		step={new ReactiveVar(0)}
+		chooser={new ReactiveVar()}
+		random={new ReactiveVar()}
+		chosenMovie={new ReactiveVar()}
+	/>,
+	'/invite': () => <Invite />,
 });
 
 Meteor.startup(() => {
@@ -29,8 +30,8 @@ Meteor.startup(() => {
 });
 
 Accounts.onLogin(() => {
-	const {group} = qs.parse(location.search.slice(1));
-	Meteor.call('ensureGroup', group);
+	const {group, invitedBy} = qs.parse(location.search.slice(1));
+	Meteor.call('ensureGroup', group, invitedBy);
 });
 
 Template.loginReplacement.replaces('_loginButtonsLoggedInSingleLogoutButton');

@@ -15,6 +15,7 @@ export const Movie = ({
 	removeMovie,
 	showRemove,
 	wrapProps = {},
+	imageSize = 'mini',
 }) => <Wrap onClick={() => selectMovie(movie._id)} movie={movie} className="movie" {...wrapProps}>
 	{showRemove && <Content className="right floated">
 		<Button onClick={() => removeMovie(movie)} className="mini red circular basic icon">
@@ -23,7 +24,7 @@ export const Movie = ({
 	</Content>}
 	{movie.posterPath &&
 		<div className="image">
-			<Image src={imageUrl(movie.posterPath, {size: 'w92'})} className="mini rounded" />
+			<Image src={imageUrl(movie.posterPath, {size: 'w92'})} className={`${imageSize} rounded`} />
 		</div>
 	}
 	{showContent && <Content>
@@ -49,6 +50,7 @@ Movie.propTypes = {
 	showRemove: PropTypes.bool,
 	removeMovie: PropTypes.func,
 	wrapProps: PropTypes.object,
+	imageSize: PropTypes.string,
 };
 
 const MovieContainer = createContainer(({showRemove}) => {

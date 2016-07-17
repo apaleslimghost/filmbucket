@@ -2,7 +2,6 @@ import React from 'react';
 import SearchContainer from './search';
 import ListContainer from './movie-list';
 import GroupContainer from './group';
-import Invite from './invite';
 import {link} from '../history';
 import {Container, Grid, Column, Menu, Item, Header, Icon} from 'react-semantify';
 
@@ -26,7 +25,10 @@ const Dashboard = () => <Container>
 						</a>
 					</Item>
 					<Item className="fitted">
-						<Invite groupId={'lololol'} />
+						<a className="ui button basic" href="/invite" onClick={link}>
+							<Icon className="add user" />
+							Invite
+						</a>
 					</Item>
 				</div>
 			</Menu>
