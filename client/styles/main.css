@@ -59,3 +59,7 @@
 .dimmer.semi.transparent {
   background: rgba(0, 0, 0, 0.4);
 }
+
+.ui.list > .item > .image.label {
+  background: #e8e8e8;
+}
