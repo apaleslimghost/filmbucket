@@ -12,8 +12,7 @@ const Member = ({user, movies, seeMovie, group}) => <Item>
 	{
 		movies.length ? <div>
 			<HorizontalMovieList movies={movies} seen={group.seen} selectMovie={seeMovie} />
-			<Divider />
-			<p className="muted">Tap the movies your group's already seen.</p>
+
 		</div> : <Content>
 			<p className="muted">No movies yet! {
 				user._id === Meteor.userId() && 'Add some on the left.'
@@ -44,11 +43,15 @@ const MemberContainer = createContainer(() => {
 	};
 }, Member);
 
-export const Group = ({users, moviesByOwner}) => <List>
-{users.map(
-	user => <MemberContainer key={user._id} user={user} movies={moviesByOwner[user._id] || []} />
-)}
-</List>;
+export const Group = ({users, moviesByOwner}) => <div>
+	<List>
+	{users.map(
+		user => <MemberContainer key={user._id} user={user} movies={moviesByOwner[user._id] || []} />
+	)}
+	</List>
+	<Divider />
+	<p className="muted">Tap the movies your group's already seen.</p>
+</div>;
 
 Group.propTypes = {
 	users: PropTypes.array,
