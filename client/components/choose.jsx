@@ -21,6 +21,7 @@ import intersection from 'lodash.intersection';
 import groupBy from 'lodash.groupby';
 import mapValues from 'lodash.mapvalues';
 import some from 'lodash.some';
+import pickBy from 'lodash.pickby';
 import joinAndKey from '../join-and-key';
 import HorizontalMovieList from './horizontal-movie-list';
 import Movie from './movie';
@@ -85,7 +86,10 @@ export const Choose = ({
 		],
 		({currentStep, previousStep}) => [
 			<Header>{chooser.profile.name}, it's your turn</Header>,
-			<p className="muted">Do you want Filmbucket to choose the movie? Or do you have something in mind?</p>,
+			<p className="muted">
+				Do you want Filmbucket to choose the movie?
+				Or do you have something in mind?
+			</p>,
 			<Divider className={c({horizontal: currentStep || previousStep}, 'header')}>
 				{currentStep ?
 					<div className="ui buttons small">
@@ -126,7 +130,7 @@ export const Choose = ({
 		currentStep: step === i,
 		previousStep: step - 1 === i,
 	})))}</div>}
-</Column>
+	</Column>
 </Grid>;
 
 Choose.propTypes = {
@@ -151,7 +155,7 @@ Choose.propTypes = {
 export default createContainer(({selected, step, chooser, random, chosenMovie}) => {
 	const groupCursor = Meteor.subscribe('group');
 	const group = Groups.findOne({members: Meteor.userId()});
-	const selectedUsers = Object.keys(selected.all());
+	const selectedUsers = Object.keys(pickBy(selected.all()));
 	const userMovies = UserMovies.find({
 		owner: {
 			$in: group ? group.members : [],
@@ -183,6 +187,7 @@ export default createContainer(({selected, step, chooser, random, chosenMovie}) 
 		chooser: Meteor.users.findOne({_id: chooser.get()}),
 		getChooser() {
 			const chosen = group.chosen || [];
+			console.log(selectedUsers);
 			const notChosenMuch = belowMedian(intersection(chosen, selectedUsers));
 			const validChoosers = notChosenMuch.length ? notChosenMuch : selectedUsers;
 
