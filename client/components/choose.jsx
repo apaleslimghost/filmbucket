@@ -187,8 +187,10 @@ export default createContainer(({selected, step, chooser, random, chosenMovie}) 
 		chooser: Meteor.users.findOne({_id: chooser.get()}),
 		getChooser() {
 			const chosen = group.chosen || [];
-			console.log(selectedUsers);
-			const notChosenMuch = belowMedian(intersection(chosen, selectedUsers));
+			const notChosenMuch = belowMedian(
+				intersection(chosen, selectedUsers),
+				selectedUsers
+			);
 			const validChoosers = notChosenMuch.length ? notChosenMuch : selectedUsers;
 
 			chooser.set(Random.choice(validChoosers));
