@@ -11,7 +11,7 @@ export const Result = ({
 	dim,
 	loading,
 	className,
-	movie,
+	movie = {},
 	dimmer: Dim = ListDim,
 	dimBlocksClick = true,
 }) => (dimBlocksClick ? <div className={`result dimmable ${className}`}>
