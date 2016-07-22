@@ -11,14 +11,15 @@ export const Result = ({
 	dim,
 	loading,
 	className,
+	movie,
 	dimmer: Dim = ListDim,
 	dimBlocksClick = true,
 }) => (dimBlocksClick ? <div className={`result dimmable ${className}`}>
 	<Dim dim={dim} loading={loading} />
-	<a onClick={onClick}>
+	<a onClick={onClick} title={movie.title}>
 		{children}
 	</a>
-</div> : <a onClick={onClick} className={`result dimmable ${className}`}>
+</div> : <a onClick={onClick} className={`result dimmable ${className}`} title={movie.title}>
 	<Dim dim={dim} loading={loading} />
 	<div>{children}</div>
 </a>);
@@ -29,6 +30,7 @@ Result.propTypes = {
 	dim: PropTypes.bool,
 	loading: PropTypes.bool,
 	className: PropTypes.string,
+	movie: PropTypes.object,
 	dimmer: component,
 	dimBlocksClick: PropTypes.bool,
 };
