@@ -20,6 +20,11 @@
   display: flex;
 }
 
+.ui.horizontal.list > .item {
+  margin-left: 0;
+  margin-right: 1em;
+}
+
 .item.movie .content.right {
   order: 3;
   display: flex;
