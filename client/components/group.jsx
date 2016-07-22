@@ -8,7 +8,7 @@ import mapValues from 'lodash.mapvalues';
 import HorizontalMovieList from './horizontal-movie-list';
 
 const Member = ({user, movies, seeMovie, group}) => <Item>
-	<Header>{user.profile.name}</Header>
+	<Header>{user._id === Meteor.userId() ? 'You' : user.profile.name}</Header>
 	{
 		movies.length ? <div>
 			<HorizontalMovieList movies={movies} seen={group.seen} selectMovie={seeMovie} />
