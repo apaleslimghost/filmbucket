@@ -6,7 +6,7 @@
   },
   "dependencies": {
     "@quarterto/below-median": "^1.2.0",
-    "boulevard": "^2.3.4",
+    "boulevard": "^2.3.5",
     "camel-case": "^1.2.2",
     "classnames": "^2.2.5",
     "copy-to-clipboard": "^3.0.2",
