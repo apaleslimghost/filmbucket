@@ -184,14 +184,27 @@ export default createContainer(({selected, step, chooser, random, chosenMovie}) 
 		random: random.get(),
 		chooser: Meteor.users.findOne({_id: chooser.get()}),
 		getChooser() {
-			const chosen = group.chosen || [];
+			const chosen = group.chosen ? [...group.chosen].reverse() : [];
+			const chosenSet = new Set(chosen);
 			const selectedSet = new Set(selectedUsers);
-			const mostRecent = chosen[chosen.length - 1];
-			const leastRecent = chosen.find(
-				person => selectedSet.has(person) && person !== mostRecent
+
+			const haventChosen = selectedUsers.filter(
+				user => !chosenSet.has(user)
 			);
 
-			chooser.set(leastRecent || Random.choice(selectedUsers));
+			const leastRecent = chosen.find(person => {
+				selectedSet.delete(person);
+				return selectedSet.size === 0;
+			});
+
+			chooser.set(
+				(
+				!!haventChosen.length
+					? Random.choice(haventChosen)
+					: leastRecent
+				) || Random.choice(selectedUsers)
+			);
+
 			nextStep();
 		},
 		randomChoice() {
