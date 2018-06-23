@@ -20,10 +20,8 @@ Accounts.onCreateUser((options, user) => {
 });
 
 Accounts.onLogin(() => {
-	const {_id, profile, services} = Meteor.user();
-	if (!profile.picture || /^https:\/\/graph.facebook.com/.test(profile.picture)) {
-		Meteor.users.update({_id}, {
-			$set: {'profile.picture': getAvatarUrl(services.facebook.id)},
-		});
-	}
+	const {_id, services} = Meteor.user();
+	Meteor.users.update({_id}, {
+		$set: {'profile.picture': getAvatarUrl(services.facebook.id)},
+	});
 });
