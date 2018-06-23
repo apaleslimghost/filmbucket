@@ -186,7 +186,10 @@ export default createContainer(({selected, step, chooser, random, chosenMovie}) 
 		getChooser() {
 			const chosen = group.chosen || [];
 			const selectedSet = new Set(selectedUsers);
-			const leastRecent = chosen.find(person => selectedSet.has(person));
+			const mostRecent = chosen[chosen.length - 1];
+			const leastRecent = chosen.find(
+				person => selectedSet.has(person) && person !== mostRecent
+			);
 
 			chooser.set(leastRecent || Random.choice(selectedUsers));
 			nextStep();
