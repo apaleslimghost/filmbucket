@@ -6,7 +6,7 @@
 - a [TMDB](https://www.themoviedb.org/) API key
 - a Facebook app for login
 
-Create a file called `.env.sh` containing `TMDB_API_KEY=[your api key]`.
+Create a file called `.env.sh` containing `export TMDB_API_KEY=[your api key]`.
 
 ## running
 

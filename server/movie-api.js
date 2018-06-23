@@ -3,6 +3,9 @@ import url from 'url';
 import path from 'path';
 import mapKeys from 'deep-map-keys';
 import camelCase from 'camel-case';
+import assertEnv from '@quarterto/assert-env';
+
+assertEnv(['TMDB_API_KEY']);
 
 const formatUrl = (pathname, query) => url.format({
 	protocol: 'https',
