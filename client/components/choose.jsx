@@ -16,8 +16,6 @@ import {
 } from 'react-semantify';
 import {Movies, UserMovies, Groups} from '../../shared/collections';
 import c from 'classnames';
-import belowMedian from '@quarterto/below-median';
-import intersection from 'lodash.intersection';
 import groupBy from 'lodash.groupby';
 import mapValues from 'lodash.mapvalues';
 import some from 'lodash.some';
@@ -187,13 +185,10 @@ export default createContainer(({selected, step, chooser, random, chosenMovie}) 
 		chooser: Meteor.users.findOne({_id: chooser.get()}),
 		getChooser() {
 			const chosen = group.chosen || [];
-			const notChosenMuch = belowMedian(
-				intersection(chosen, selectedUsers),
-				selectedUsers
-			);
-			const validChoosers = notChosenMuch.length ? notChosenMuch : selectedUsers;
+			const selectedSet = new Set(selectedUsers);
+			const leastRecent = chosen.find(person => selectedSet.has(person));
 
-			chooser.set(Random.choice(validChoosers));
+			chooser.set(leastRecent || Random.choice(selectedUsers));
 			nextStep();
 		},
 		randomChoice() {

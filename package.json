@@ -5,6 +5,7 @@
     "start": "source .env.sh && meteor run"
   },
   "dependencies": {
+    "@babel/runtime": "^7.0.0-beta.51",
     "@quarterto/assert-env": "^1.4.0",
     "@quarterto/below-median": "^1.2.0",
     "boulevard": "^2.3.5",
