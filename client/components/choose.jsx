@@ -24,6 +24,7 @@ import joinAndKey from '../join-and-key'
 import HorizontalMovieList from './horizontal-movie-list'
 import Movie from './movie'
 import { navigate } from '../history'
+import { gravatarUrl } from '../../shared/image-url'
 
 export const Choose = ({
 	group,
@@ -67,7 +68,7 @@ export const Choose = ({
 												})}
 												onClick={() => toggleSelected(user)}
 											>
-												<Image src={user.profile.picture} />
+												<Image src={gravatarUrl(user.emails[0].address)} />
 												{user.profile.name}
 												{usersSelected[user._id] && (
 													<div className='detail'>

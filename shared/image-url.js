@@ -15,7 +15,7 @@ const gravatarHash = email =>
 		.update(email.trim().toLowerCase())
 		.digest('hex')
 
-export const gravatar = email =>
+export const gravatarUrl = email =>
 	url.format({
 		scheme: 'https',
 		host: 'www.gravatar.com',
