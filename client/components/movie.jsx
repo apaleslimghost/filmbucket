@@ -10,7 +10,6 @@ import {
 	Label,
 	Button,
 } from 'react-semantify'
-import component from '../component'
 import imageUrl from '../../shared/image-url'
 import { UserMovies } from '../../shared/collections'
 import keyBy from 'lodash.keyby'

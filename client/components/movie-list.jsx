@@ -4,7 +4,6 @@ import { Meteor } from 'meteor/meteor'
 import { createContainer } from 'meteor/react-meteor-data'
 import Movie from './movie'
 import { Movies, UserMovies } from '../../shared/collections'
-import component from '../component'
 
 export const MovieList = ({
 	movies,

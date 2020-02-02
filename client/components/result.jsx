@@ -3,7 +3,6 @@ import React from 'react'
 import { createContainer } from 'meteor/react-meteor-data'
 import { UserMovies } from '../../shared/collections'
 import ListDim from './list-dim'
-import component from '../component'
 
 export const Result = ({
 	children,
