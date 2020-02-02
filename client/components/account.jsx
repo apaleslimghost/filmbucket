@@ -1,3 +1,3 @@
-import {blazeToReact} from 'meteor/gadicc:blaze-react-component';
+import { blazeToReact } from 'meteor/gadicc:blaze-react-component'
 
-export default blazeToReact('loginButtons');
+export default blazeToReact('loginButtons')

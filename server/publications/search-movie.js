@@ -1,32 +1,32 @@
-import {Meteor} from 'meteor/meteor';
-import {search} from '../movie-api';
+import { Meteor } from 'meteor/meteor'
+import { search } from '../movie-api'
 
-Meteor.publish('searchmovie', function searchmoviePublish(q) {
-	const query = q.trim();
+Meteor.publish('searchmovie', function(q) {
+	const query = q.trim()
 
 	if (!query || query.length <= 2) {
-		return this.ready();
+		return this.ready()
 	}
 
-	let results;
+	let results
 
 	try {
-		results = search(query);
+		results = search(query)
 	} catch (e) {
 		if (e.response && e.response.data && e.response.data.errors) {
 			if (e.response.data.errors.indexOf('query must be provided') >= 0) {
-				results = [];
+				results = []
 			} else {
-				this.error(e.response.data.errors.join(', '));
+				this.error(e.response.data.errors.join(', '))
 			}
 		} else {
-			this.error(e);
+			this.error(e)
 		}
 	}
 
 	results.forEach(movie => {
-		this.added('searchmovies', movie.id, movie);
-	});
+		this.added('searchmovies', movie.id, movie)
+	})
 
-	this.ready();
-});
+	this.ready()
+})

@@ -1,4 +1,4 @@
-import {Children} from 'react';
+import { Children } from 'react'
 
-const OnlyChild = ({children}) => Children.only(children);
-export default OnlyChild;
+const OnlyChild = ({ children }) => Children.only(children)
+export default OnlyChild
