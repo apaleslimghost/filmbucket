@@ -1,6 +1,5 @@
 accounts-base@1.5.0
-accounts-facebook@1.3.2
-accounts-oauth@1.1.16
+accounts-password@1.5.3
 aldeed:template-extension@4.0.0
 allow-deny@1.1.0
 autoupdate@1.6.0
@@ -29,9 +28,9 @@ ecmascript-runtime@0.7.0
 ecmascript-runtime-client@0.10.0
 ecmascript-runtime-server@0.9.0
 ejson@1.1.1
+email@1.2.3
 es5-shim@4.8.0
 facebook-config-ui@1.0.2
-facebook-oauth@1.6.0
 fetch@0.1.1
 gadicc:blaze-react-component@1.1.1
 geojson-utils@1.0.10
@@ -61,9 +60,8 @@ mongo@1.8.0
 mongo-decimal@0.1.1
 mongo-dev-server@1.1.0
 mongo-id@1.0.7
+npm-bcrypt@0.9.3
 npm-mongo@3.3.0
-oauth@1.2.8
-oauth2@1.2.1
 observe-sequence@1.0.16
 ordered-dict@1.1.0
 pauldowman:dotenv@1.0.1
@@ -80,10 +78,12 @@ routepolicy@1.1.0
 semantic:ui-css@2.1.2
 service-configuration@1.0.11
 session@1.2.0
+sha@1.0.9
 shell-server@0.4.0
 socket-stream-client@0.2.2
 spacebars@1.0.12
 spacebars-compiler@1.1.1
+srp@1.0.12
 standard-minifier-css@1.6.0
 standard-minifier-js@2.6.0
 templating@1.2.14
