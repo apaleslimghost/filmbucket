@@ -1,7 +1,7 @@
 import React from 'react'
-import { List, Loader, Item } from 'react-semantify'
+import { List, Loader, Item } from 'semantic-ui-react'
 import { Meteor } from 'meteor/meteor'
-import { createContainer } from 'meteor/react-meteor-data'
+import { withTracker } from 'meteor/react-meteor-data'
 import Movie from './movie'
 import { Movies, UserMovies } from '../../shared/collections'
 
@@ -40,7 +40,7 @@ export const MovieList = ({
 	</Wrap>
 )
 
-const ListContainer = createContainer(() => {
+const ListContainer = withTracker(() => {
 	const userMoviesCursor = Meteor.subscribe('usermovies')
 	const userMovies = UserMovies.find({
 		owner: Meteor.userId(),
@@ -57,6 +57,6 @@ const ListContainer = createContainer(() => {
 		Because who cares about the reviews, I like it and dammit you're watching
 		it.`,
 	}
-}, MovieList)
+})(MovieList)
 
 export default ListContainer

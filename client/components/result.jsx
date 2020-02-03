@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor'
 import React from 'react'
-import { createContainer } from 'meteor/react-meteor-data'
+import { withTracker } from 'meteor/react-meteor-data'
 import { UserMovies } from '../../shared/collections'
 import ListDim from './list-dim'
 
@@ -17,32 +17,34 @@ export const Result = ({
 	dimBlocksClick ? (
 		<div className={`result dimmable ${className}`}>
 			<Dim dim={dim} loading={loading} />
-			<a onClick={onClick} title={movie.title}>
+			<a title={movie.title} onClick={onClick}>
 				{children}
 			</a>
 		</div>
 	) : (
 		<a
-			onClick={onClick}
 			className={`result dimmable ${className}`}
 			title={movie.title}
+			onClick={onClick}
 		>
 			<Dim dim={dim} loading={loading} />
 			<div>{children}</div>
 		</a>
 	)
 
-const ResultContainer = createContainer(({ movie }) => {
+const ResultContainer = withTracker(({ movie }) => {
 	const sub = Meteor.subscribe('usermovies')
 	return {
 		loading: !sub.ready(),
 		dim:
 			sub.ready() &&
-			!!UserMovies.findOne({
-				owner: Meteor.userId(),
-				movie: movie && movie._id,
-			}),
+			Boolean(
+				UserMovies.findOne({
+					owner: Meteor.userId(),
+					movie: movie && movie._id,
+				}),
+			),
 	}
-}, Result)
+})(Result)
 
 export default ResultContainer

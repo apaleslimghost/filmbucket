@@ -1,17 +1,16 @@
 import React from 'react'
 import { Meteor } from 'meteor/meteor'
 import { ReactiveVar } from 'meteor/reactive-var'
-import { createContainer } from 'meteor/react-meteor-data'
+import { withTracker } from 'meteor/react-meteor-data'
 import {
 	Icon,
 	Grid,
-	Column,
 	Loader,
 	Input,
 	Header,
 	Label,
 	Divider,
-} from 'react-semantify'
+} from 'semantic-ui-react'
 import copyToClipboard from 'copy-to-clipboard'
 import qs from 'querystring'
 import { Groups } from '../../shared/collections'
@@ -29,7 +28,7 @@ const Invite = ({
 		<Loader />
 	) : (
 		<Grid className='center aligned'>
-			<Column className='six wide'>
+			<Grid.Column className='six wide'>
 				<Header>Invite users</Header>
 				<div className='field'>
 					<Label className='right pointing outside basic blue'>
@@ -53,13 +52,13 @@ const Invite = ({
 				</div>
 				<Divider className='section' />
 				<p className='muted'>{helpText}</p>
-			</Column>
+			</Grid.Column>
 		</Grid>
 	)
 
 const copied = new ReactiveVar(false)
 
-const InviteContainer = createContainer(() => {
+const InviteContainer = withTracker(() => {
 	const sub = Meteor.subscribe('group')
 	const group = Groups.findOne({ members: Meteor.userId() })
 	const inviteUrl = sub.ready()
@@ -89,6 +88,6 @@ const InviteContainer = createContainer(() => {
 		they sign up, they'll automatically become a member. They'll see your name on
 		the signup page.`,
 	}
-}, Invite)
+})(Invite)
 
 export default InviteContainer

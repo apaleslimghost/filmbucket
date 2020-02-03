@@ -1,15 +1,15 @@
 import { Meteor } from 'meteor/meteor'
-import { createContainer } from 'meteor/react-meteor-data'
+import { withTracker } from 'meteor/react-meteor-data'
 import React from 'react'
 import {
-	Content,
+	Container,
 	Header,
 	Icon,
 	Image,
 	Item,
 	Label,
 	Button,
-} from 'react-semantify'
+} from 'semantic-ui-react'
 import imageUrl from '../../shared/image-url'
 import { UserMovies } from '../../shared/collections'
 import keyBy from 'lodash.keyby'
@@ -31,14 +31,14 @@ export const Movie = ({
 		{...wrapProps}
 	>
 		{showRemove && (
-			<Content className='right floated'>
+			<Container className='right floated'>
 				<Button
 					onClick={() => removeMovie(movie)}
 					className='mini red circular basic icon'
 				>
 					<Icon className='remove' />
 				</Button>
-			</Content>
+			</Container>
 		)}
 		{movie.posterPath && (
 			<div className='image'>
@@ -49,7 +49,7 @@ export const Movie = ({
 			</div>
 		)}
 		{showContent && (
-			<Content>
+			<Container>
 				<Header className='small'>{movie.title}</Header>
 				<p className='muted'>{movie.tagline}</p>
 				<div className='description'>
@@ -66,12 +66,12 @@ export const Movie = ({
 						</Label>
 					)}
 				</div>
-			</Content>
+			</Container>
 		)}
 	</Wrap>
 )
 
-const MovieContainer = createContainer(({ showRemove }) => {
+const MovieContainer = withTracker(({ showRemove }) => {
 	const userMoviesCursor = Meteor.subscribe('usermovies')
 	const userMovies = UserMovies.find({
 		owner: Meteor.userId(),
@@ -85,6 +85,6 @@ const MovieContainer = createContainer(({ showRemove }) => {
 			UserMovies.remove(userMovie._id)
 		},
 	}
-}, Movie)
+})(Movie)
 
 export default MovieContainer

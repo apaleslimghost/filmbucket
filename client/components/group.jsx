@@ -1,8 +1,8 @@
 import React from 'react'
-import { createContainer } from 'meteor/react-meteor-data'
+import { withTracker } from 'meteor/react-meteor-data'
 import { Meteor } from 'meteor/meteor'
 import { Groups, UserMovies, Movies } from '../../shared/collections'
-import { List, Item, Header, Content, Divider } from 'react-semantify'
+import { List, Item, Header, Container, Divider } from 'semantic-ui-react'
 import groupBy from 'lodash.groupby'
 import mapValues from 'lodash.mapvalues'
 import HorizontalMovieList from './horizontal-movie-list'
@@ -19,17 +19,17 @@ const Member = ({ user, movies, seeMovie, group }) => (
 				/>
 			</div>
 		) : (
-			<Content>
+			<Container>
 				<p className='muted'>
 					No movies yet!{' '}
 					{user._id === Meteor.userId() && 'Add some on the left.'}
 				</p>
-			</Content>
+			</Container>
 		)}
 	</Item>
 )
 
-const MemberContainer = createContainer(() => {
+const MemberContainer = withTracker(() => {
 	const group = Groups.findOne({ members: Meteor.userId() })
 	return {
 		group,
@@ -45,7 +45,7 @@ const MemberContainer = createContainer(() => {
 			)
 		},
 	}
-}, Member)
+})(Member)
 
 export const Group = ({ users, moviesByOwner }) => (
 	<div>
@@ -63,7 +63,7 @@ export const Group = ({ users, moviesByOwner }) => (
 	</div>
 )
 
-const GroupContainer = createContainer(() => {
+const GroupContainer = withTracker(() => {
 	const groupCursor = Meteor.subscribe('group')
 	const group = Groups.findOne({ members: Meteor.userId() })
 	const userMovies = UserMovies.find({
@@ -84,6 +84,6 @@ const GroupContainer = createContainer(() => {
 			.find({ _id: { $in: group ? group.members : [] } })
 			.fetch(),
 	}
-}, Group)
+})(Group)
 
 export default GroupContainer

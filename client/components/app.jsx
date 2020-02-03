@@ -1,10 +1,10 @@
 import { Meteor } from 'meteor/meteor'
-import { createContainer } from 'meteor/react-meteor-data'
+import { withTracker } from 'meteor/react-meteor-data'
 import React from 'react'
 import IntroPage from './intro-page'
 import Logo from './logo'
 import Account from './account'
-import { Container, Menu, Item, Header } from 'react-semantify'
+import { Container, Menu, Item, Header } from 'semantic-ui-react'
 import c from 'classnames'
 
 export const App = ({ children, showMenu = true }) => (
@@ -26,12 +26,9 @@ export const App = ({ children, showMenu = true }) => (
 	</Container>
 )
 
-const AppContainer = createContainer(
-	({ router }) => ({
-		children: Meteor.user() ? router() : <IntroPage />,
-		showMenu: !!Meteor.user(),
-	}),
-	App,
-)
+const connectApp = withTracker(({ router }) => ({
+	children: Meteor.user() ? router() : <IntroPage />,
+	showMenu: Boolean(Meteor.user()),
+}))
 
-export default AppContainer
+export default connectApp(App)

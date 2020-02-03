@@ -3,20 +3,12 @@ import SearchContainer from './search'
 import ListContainer from './movie-list'
 import GroupContainer from './group'
 import { link } from '../history'
-import {
-	Container,
-	Grid,
-	Column,
-	Menu,
-	Item,
-	Header,
-	Icon,
-} from 'react-semantify'
+import { Container, Grid, Menu, Item, Header, Icon } from 'semantic-ui-react'
 
 const Dashboard = () => (
 	<Container>
 		<Grid className='two column divided relaxed stackable'>
-			<Column>
+			<Grid.Column>
 				<Menu className='secondary'>
 					<Item className='fitted'>
 						<Header>Your list</Header>
@@ -25,9 +17,9 @@ const Dashboard = () => (
 						<SearchContainer />
 					</Item>
 				</Menu>
-				<ListContainer className='divided relaxed' showRemove />
-			</Column>
-			<Column>
+				<ListContainer showRemove className='divided relaxed' />
+			</Grid.Column>
+			<Grid.Column>
 				<Menu className='secondary'>
 					<Item className='fitted'>
 						<Header>Your group</Header>
@@ -48,7 +40,7 @@ const Dashboard = () => (
 					</div>
 				</Menu>
 				<GroupContainer />
-			</Column>
+			</Grid.Column>
 		</Grid>
 	</Container>
 )

@@ -1,5 +1,5 @@
 import React from 'react'
-import { List } from 'react-semantify'
+import { List } from 'semantic-ui-react'
 import Movie from './movie'
 import { Result } from './result'
 import SeenDim from './seen-dim'

@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor'
 import { Session } from 'meteor/session'
-import { createContainer } from 'meteor/react-meteor-data'
+import { withTracker } from 'meteor/react-meteor-data'
 import React from 'react'
-import { Input, Icon } from 'react-semantify'
+import { Input, Icon } from 'semantic-ui-react'
 import c from 'classnames'
 import { debounce } from 'lodash'
 
@@ -24,10 +24,10 @@ export const MovieSearch = ({
 		<Input className='icon'>
 			<input
 				value={displayQuery}
-				onChange={ev => search(ev.target.value)}
 				type='search'
 				className='prompt'
 				placeholder='Add a movie&hellip;'
+				onChange={ev => search(ev.target.value)}
 			/>
 			<Icon
 				className={ready ? 'circular remove link' : 'search'}
@@ -60,18 +60,18 @@ const clearSearch = () => {
 	Session.set('displayQuery', '')
 }
 
-const SearchContainer = createContainer(() => {
+const SearchContainer = withTracker(() => {
 	const query = Session.get('query')
 	const displayQuery = Session.get('displayQuery')
 	const search = Meteor.subscribe('searchmovie', query)
 	const movies = SearchMovies.find({})
-	const ready = !!query && search.ready()
+	const ready = Boolean(query) && search.ready()
 	const noResults = ready && !movies.count()
 
 	return {
 		displayQuery,
 		noResults,
-		loading: !!query && !search.ready(),
+		loading: Boolean(query) && !search.ready(),
 		ready,
 		movies: movies.fetch(),
 
@@ -90,6 +90,6 @@ const SearchContainer = createContainer(() => {
 
 		clearSearch,
 	}
-}, MovieSearch)
+})(MovieSearch)
 
 export default SearchContainer

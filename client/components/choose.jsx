@@ -1,7 +1,7 @@
 import React from 'react'
 import { Meteor } from 'meteor/meteor'
 import { Random } from 'meteor/random'
-import { createContainer } from 'meteor/react-meteor-data'
+import { withTracker } from 'meteor/react-meteor-data'
 import {
 	Header,
 	Divider,
@@ -12,8 +12,7 @@ import {
 	Icon,
 	Button,
 	Grid,
-	Column,
-} from 'react-semantify'
+} from 'semantic-ui-react'
 import { Movies, UserMovies, Groups } from '../../shared/collections'
 import c from 'classnames'
 import groupBy from 'lodash.groupby'
@@ -45,7 +44,7 @@ export const Choose = ({
 	finished,
 }) => (
 	<Grid className='center aligned stackable'>
-		<Column className='eight wide left aligned'>
+		<Grid.Column className='eight wide left aligned'>
 			{loading ? (
 				<Loader />
 			) : (
@@ -180,11 +179,11 @@ export const Choose = ({
 					)}
 				</div>
 			)}
-		</Column>
+		</Grid.Column>
 	</Grid>
 )
 
-export default createContainer(
+export default withTracker(
 	({ selected, step, chooser, random, chosenMovie }) => {
 		const groupCursor = Meteor.subscribe('group')
 		const group = Groups.findOne({ members: Meteor.userId() })
@@ -265,5 +264,4 @@ export default createContainer(
 			},
 		}
 	},
-	Choose,
-)
+)(Choose)

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Column } from 'react-semantify'
+import { Grid } from 'semantic-ui-react'
 import { route_ } from 'boulevard'
 import history from './history'
 
@@ -11,7 +11,7 @@ export default route_({
 	fourOhFour() {
 		return (
 			<Grid className='middle aligned center aligned fullheight'>
-				<Column className='six wide'>{history.url} not found</Column>
+				<Grid.Column className='six wide'>{history.url} not found</Grid.Column>
 			</Grid>
 		)
 	},
