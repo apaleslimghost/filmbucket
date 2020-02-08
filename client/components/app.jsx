@@ -49,7 +49,7 @@ export const App = ({ children, showMenu = true }) => (
 			<Menu className='text'>
 				<Item>
 					<Header>
-						<Logo />
+						<Logo size='small' />
 					</Header>
 				</Item>
 				<Item className='right'>
