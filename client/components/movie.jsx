@@ -25,48 +25,48 @@ export const Movie = ({
 	imageSize = 'mini',
 }) => (
 	<Wrap
-		onClick={() => selectMovie(movie._id)}
 		movie={movie}
 		className='movie'
+		onClick={() => selectMovie(movie._id)}
 		{...wrapProps}
 	>
-		{showRemove && (
-			<Container className='right floated'>
-				<Button
-					onClick={() => removeMovie(movie)}
-					className='mini red circular basic icon'
-				>
-					<Icon className='remove' />
-				</Button>
-			</Container>
-		)}
 		{movie.posterPath && (
-			<div className='image'>
-				<Image
-					src={imageUrl(movie.posterPath, { size: 'w92' })}
-					className={`${imageSize} rounded`}
-				/>
-			</div>
+			<Item.Image
+				rounded
+				src={imageUrl(movie.posterPath, { size: 'w92' })}
+				size={imageSize}
+			/>
 		)}
 		{showContent && (
-			<Container>
-				<Header className='small'>{movie.title}</Header>
-				<p className='muted'>{movie.tagline}</p>
-				<div className='description'>
+			<Item.Content>
+				<Item.Header>{movie.title}</Item.Header>
+				<Item.Extra>{movie.tagline}</Item.Extra>
+				<Item.Description>
 					{movie.releaseDate && (
 						<Label className='small'>
 							<Icon className='calendar' />
 							<span>{new Date(movie.releaseDate).getFullYear()}</span>
 						</Label>
 					)}
-					{!!movie.voteCount && (
+					{Boolean(movie.voteCount) && (
 						<Label className='small'>
 							<Icon className='star' />
 							<span>{movie.voteAverage}</span>
 						</Label>
 					)}
-				</div>
-			</Container>
+				</Item.Description>
+			</Item.Content>
+		)}
+		{showRemove && (
+			<Item.Extra>
+				<Button
+					floated='right'
+					className='mini red circular basic icon'
+					onClick={() => removeMovie(movie)}
+				>
+					<Icon className='remove' />
+				</Button>
+			</Item.Extra>
 		)}
 	</Wrap>
 )

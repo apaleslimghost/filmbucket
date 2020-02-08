@@ -4,10 +4,9 @@ import Logo from './logo'
 import Account from './account'
 
 const IntroPage = () => (
-	<Grid className='middle aligned center aligned fullheight'>
-		<Grid.Column className='six wide'>
+	<Grid centered verticalAlign='middle' className='fullheight'>
+		<Grid.Column width={8}>
 			<Logo />
-			<div className='tagline'></div>
 			<Account />
 		</Grid.Column>
 	</Grid>

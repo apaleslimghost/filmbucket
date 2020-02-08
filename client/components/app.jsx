@@ -1,11 +1,47 @@
 import { Meteor } from 'meteor/meteor'
-import { withTracker } from 'meteor/react-meteor-data'
+import { withTracker, useTracker } from 'meteor/react-meteor-data'
 import React from 'react'
 import IntroPage from './intro-page'
 import Logo from './logo'
-import Account from './account'
-import { Container, Menu, Item, Header } from 'semantic-ui-react'
+import {
+	Container,
+	Menu,
+	Item,
+	Header,
+	Image,
+	Dropdown,
+} from 'semantic-ui-react'
 import c from 'classnames'
+import { gravatarUrl } from '../../shared/image-url'
+
+function User() {
+	const user = useTracker(() => Meteor.user())
+	const image = user && gravatarUrl(user.emails[0].address)
+
+	return (
+		user && (
+			<Dropdown
+				trigger={
+					<div>
+						<Image avatar src={image} alt={user.emails[0].address} />
+						<span>{user.profile.name}</span>
+					</div>
+				}
+				icon={null}
+				options={[
+					{
+						key: 'logout',
+						text: 'Log out',
+						icon: 'sign out',
+						onClick() {
+							Meteor.logout()
+						},
+					},
+				]}
+			/>
+		)
+	)
+}
 
 export const App = ({ children, showMenu = true }) => (
 	<Container className={c({ fullheight: !showMenu })}>
@@ -17,7 +53,7 @@ export const App = ({ children, showMenu = true }) => (
 					</Header>
 				</Item>
 				<Item className='right'>
-					<Account />
+					<User />
 				</Item>
 			</Menu>
 		)}

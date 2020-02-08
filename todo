@@ -1,6 +1,5 @@
-☐ update semantic-ui packages
+✔ update semantic-ui packages @done(2020-02-08 16:35)
 ☐ creating user with existing userid
 ☐ fix invite flow
-☐ enrol flow
 ☐ better home/login
 ☐ hooks
