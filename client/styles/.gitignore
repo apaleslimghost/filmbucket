@@ -1,0 +1,6 @@
+*
+!.gitignore
+!main.css
+!custom.semantic.json
+!*/
+!**/*.overrides.import.less
